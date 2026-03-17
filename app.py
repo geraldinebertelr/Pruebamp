@@ -89,34 +89,67 @@ elif menu == "Equipos":
 
     st.header("Equipos Operativos")
 
+    # RESUMEN GENERAL
+    st.markdown("### Resumen de equipos")
+    c1, c2, c3, c4 = st.columns(4)
+
+    with c1:
+        st.metric("Disponibles", "2")
+    with c2:
+        st.metric("En mantenimiento", "1")
+    with c3:
+        st.metric("Horas acumuladas", "368 h")
+    with c4:
+        st.metric("Combustible promedio", "62%")
+
+    st.markdown("---")
+
+    # TARJETAS POR EQUIPO
+    st.markdown("### Estado por equipo")
+
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.metric("Cargador 102", "Disponible")
-        st.write("Horas trabajadas: 120 h")
-        st.write("Combustible: 85%")
-        st.write("Próximo mtto: 20 h")
-        st.write("Último mtto: OK")
+        st.subheader("Cargador 102")
+        st.success("Disponible")
+        st.write("**Horas trabajadas:** 120 h")
+        st.write("**Combustible:** 85%")
+        st.write("**Próximo mtto:** 20 h")
+        st.write("**Último mtto:** OK")
 
     with col2:
-        st.metric("Cargador 103", "En operación")
-        st.write("Horas trabajadas: 98 h")
-        st.write("Combustible: 60%")
-        st.write("Próximo mtto: 35 h")
-        st.write("Último mtto: OK")
+        st.subheader("Cargador 103")
+        st.info("En operación")
+        st.write("**Horas trabajadas:** 98 h")
+        st.write("**Combustible:** 60%")
+        st.write("**Próximo mtto:** 35 h")
+        st.write("**Último mtto:** OK")
 
     with col3:
-        st.metric("Cargador 109", "En mantenimiento")
-        st.write("Horas trabajadas: 150 h")
-        st.write("Combustible: 40%")
-        st.write("Próximo mtto: En proceso")
-        st.write("Último mtto: Observación")
+        st.subheader("Cargador 109")
+        st.error("En mantenimiento")
+        st.write("**Horas trabajadas:** 150 h")
+        st.write("**Combustible:** 40%")
+        st.write("**Próximo mtto:** En proceso")
+        st.write("**Último mtto:** Observación")
 
     st.markdown("---")
-    st.subheader("Otros equipos")
-    st.write("- Lavaruedas: Operativo")
-    st.write("- Parrillas: Operativas")
 
+    # OTROS EQUIPOS
+    st.markdown("### Otros equipos")
+    col4, col5 = st.columns(2)
+
+    with col4:
+        st.subheader("Lavaruedas")
+        st.success("Operativo")
+        st.write("**Estado actual:** Disponible")
+        st.write("**Última revisión:** OK")
+
+    with col5:
+        st.subheader("Parrillas")
+        st.success("Operativas")
+        st.write("**Estado actual:** Sin novedad")
+        st.write("**Última revisión:** OK")
 # -----------------------------------
 # PERSONAL
 # -----------------------------------
