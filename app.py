@@ -97,9 +97,9 @@ elif menu == "Equipos":
     c1, c2, c3, c4 = st.columns(4)
 
     with c1:
-        st.metric("Disponibles", "2")
+        st.metric("Disponibles", "2", delta="66.7% flota")
     with c2:
-        st.metric("En mantenimiento", "1")
+        st.metric("En mantenimiento", "1", delta="33.3% flota")
     with c3:
         st.metric("Horas acumuladas", "368 h")
     with c4:
@@ -107,52 +107,103 @@ elif menu == "Equipos":
 
     st.markdown("---")
 
-    # TARJETAS POR EQUIPO
+    # DETALLE DE EQUIPOS
     st.markdown("### Estado por equipo")
 
-    col1, col2, col3 = st.columns(3)
+    equipos = [
+        {
+            "nombre": "Cargador 102",
+            "estado": "Disponible",
+            "horas": 120,
+            "combustible": 85,
+            "proximo_mtto": 20,
+            "ultimo_mtto": "OK"
+        },
+        {
+            "nombre": "Cargador 103",
+            "estado": "En operación",
+            "horas": 98,
+            "combustible": 60,
+            "proximo_mtto": 35,
+            "ultimo_mtto": "OK"
+        },
+        {
+            "nombre": "Cargador 109",
+            "estado": "En mantenimiento",
+            "horas": 150,
+            "combustible": 40,
+            "proximo_mtto": 0,
+            "ultimo_mtto": "Observación"
+        }
+    ]
 
-    with col1:
-        st.subheader("🚜 Cargador 102")
-        st.success("🟢 Disponible")
-        st.write("**Horas trabajadas:** 120 h")
-        st.write("**Combustible:** 85%")
-        st.write("**Próximo mtto:** 20 h")
-        st.write("**Último mtto:** OK")
+    cols = st.columns(3)
 
-    with col2:
-        st.subheader("🚜 Cargador 103")
-        st.info("🔵 En operación")
-        st.write("**Horas trabajadas:** 98 h")
-        st.write("**Combustible:** 60%")
-        st.write("**Próximo mtto:** 35 h")
-        st.write("**Último mtto:** OK")
+    for col, eq in zip(cols, equipos):
+        with col:
+            st.markdown(f"#### 🚜 {eq['nombre']}")
 
-    with col3:
-        st.subheader("🚜 Cargador 109")
-        st.error("🔴 En mantenimiento")
-        st.write("**Horas trabajadas:** 150 h")
-        st.write("**Combustible:** 40%")
-        st.write("**Próximo mtto:** En proceso")
-        st.write("**Último mtto:** Observación")
+            if eq["estado"] == "Disponible":
+                st.success("🟢 Disponible")
+            elif eq["estado"] == "En operación":
+                st.info("🔵 En operación")
+            else:
+                st.error("🔴 En mantenimiento")
+
+            st.write(f"**Horas trabajadas:** {eq['horas']} h")
+            st.write(f"**Combustible:** {eq['combustible']}%")
+
+            if eq["proximo_mtto"] > 0:
+                st.write(f"**Próximo mtto:** {eq['proximo_mtto']} h")
+            else:
+                st.write("**Próximo mtto:** En proceso")
+
+            st.write(f"**Último mtto:** {eq['ultimo_mtto']}")
+
+            # ALERTAS OPERATIVAS
+            if eq["combustible"] < 50 and eq["estado"] != "En mantenimiento":
+                st.warning("⚠️ Requiere programación de abastecimiento de combustible.")
+
+            if eq["proximo_mtto"] > 0 and eq["proximo_mtto"] <= 20:
+                st.warning("⚠️ Programar mantenimiento preventivo en corto plazo.")
 
     st.markdown("---")
 
     # OTROS EQUIPOS
-    st.markdown("### Otros equipos")
+    st.markdown("### Otros equipos críticos")
     col4, col5 = st.columns(2)
 
     with col4:
-        st.subheader("🧼 Lavaruedas")
+        st.markdown("#### 🧼 Lavaruedas")
         st.success("🟢 Operativo")
         st.write("**Estado actual:** Disponible")
         st.write("**Última revisión:** OK")
+        st.write("**Observación:** Sin restricciones operativas.")
 
     with col5:
-        st.subheader("🟫 Parrillas")
+        st.markdown("#### 🟫 Parrillas")
         st.success("🟢 Operativas")
         st.write("**Estado actual:** Sin novedad")
         st.write("**Última revisión:** OK")
+        st.write("**Observación:** Aptas para descargue continuo.")
+
+    st.markdown("---")
+
+    # RECOMENDACIÓN GERENCIAL
+    st.markdown("### Recomendación operativa")
+
+    st.info("""
+    **Conclusión del estado de flota:**
+    
+    La operación cuenta actualmente con **2 equipos disponibles de 3**, lo que permite atender la demanda actual;
+    sin embargo, se identifica una **condición de atención prioritaria** sobre el **Cargador 102**, debido a su cercanía
+    al mantenimiento preventivo, y sobre el **Cargador 109**, que permanece fuera de servicio.
+
+    **Acciones sugeridas:**
+    - Programar el mantenimiento preventivo del **Cargador 102** antes de alcanzar el límite operativo.
+    - Hacer seguimiento al cierre del mantenimiento del **Cargador 109** para recuperar disponibilidad de flota.
+    - Mantener control diario de combustible y horas trabajadas para evitar afectaciones al descargue.
+    """)
 # -----------------------------------
 # PERSONAL
 # -----------------------------------
