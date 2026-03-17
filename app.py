@@ -1,101 +1,63 @@
 import streamlit as st
 import pandas as pd
 
-st.set_page_config(page_title="Operación MP", layout="wide")
+st.set_page_config(
+    page_title="Operación Integrada MP",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
-# -----------------------
-# HEADER
-# -----------------------
 st.title("Operación Integrada de Materias Primas")
 st.caption("Continuidad operativa | Control de inventarios | Eficiencia en descargues")
 
-# -----------------------
-# KPIs
-# -----------------------
-st.subheader("Indicadores Clave")
-
-col1, col2, col3, col4 = st.columns(4)
-
-col1.metric("Disponibilidad equipos", "92%")
-col2.metric("Cobertura inventario", "5 días")
-col3.metric("Desviación inventario", "3%")
-col4.metric("Rendimiento descargue", "450 ton/h")
-
-# -----------------------
-# MENU
-# -----------------------
-menu = st.sidebar.selectbox(
-    "Selecciona módulo",
-    ["Equipos", "Personal", "Descargues", "Organización MP", "Abastecimiento", "Inventarios"]
+menu = st.sidebar.radio(
+    "Módulos",
+    [
+        "Resumen ejecutivo",
+        "Equipos operativos",
+        "Gestión de personal",
+        "Descargues 2026",
+        "Organización de materias primas",
+        "Abastecimiento",
+        "Inventarios y desviaciones"
+    ]
 )
 
-# -----------------------
-# EQUIPOS
-# -----------------------
-if menu == "Equipos":
-    st.subheader("Gestión de Equipos")
+if menu == "Resumen ejecutivo":
+    st.subheader("Resumen ejecutivo")
 
-    df = pd.DataFrame({
-        "Equipo": ["102", "103", "109", "Lavaruedas", "Parrillas"],
-        "Disponibilidad (%)": [95, 90, 88, 98, 100],
-        "Horas trabajo": [180, 200, 210, 120, 95],
-        "Combustible (L)": [320, 350, 370, 0, 0],
-        "Próx mtto": ["50h", "30h", "20h", "15 días", "OK"],
-        "Estado": ["OK", "Observación", "Crítico", "OK", "OK"]
-    })
+    col1, col2, col3, col4 = st.columns(4)
+    col1.metric("Disponibilidad equipos", "92%")
+    col2.metric("Cobertura inventario", "5 días")
+    col3.metric("Desviación inventario", "3%")
+    col4.metric("Rendimiento descargue", "450 ton/h")
 
-    st.dataframe(df, use_container_width=True)
+    st.markdown("### Visión integrada de la operación")
+    st.info(
+        "Esta vista resume el estado operativo de equipos, personal, descargues, "
+        "organización de materias primas, abastecimiento e inventarios."
+    )
 
-# -----------------------
-# PERSONAL
-# -----------------------
-elif menu == "Personal":
-    st.subheader("Gestión de Personal")
+elif menu == "Equipos operativos":
+    st.subheader("Equipos operativos")
+    st.write("Aquí mostraremos disponibilidad, horas de trabajo, combustible, próximo mantenimiento y resultado del último mantenimiento.")
 
-    st.metric("Total personal", "8")
-    st.write("Turno día: 5")
-    st.write("Turno noche: 3")
+elif menu == "Gestión de personal":
+    st.subheader("Gestión de personal")
+    st.write("Aquí mostraremos recursos actuales, roles y turnos diarios.")
 
-# -----------------------
-# DESCARGUES
-# -----------------------
-elif menu == "Descargues":
+elif menu == "Descargues 2026":
     st.subheader("Descargues 2026")
+    st.write("Aquí mostraremos histórico del año, tipo de material, tiempos de descargue y recursos utilizados.")
 
-    df = pd.DataFrame({
-        "Barco": ["B1", "B2"],
-        "Material": ["Caliza", "Yeso"],
-        "Toneladas": [20000, 15000],
-        "Tiempo (h)": [40, 35],
-        "Rendimiento (ton/h)": [500, 428]
-    })
+elif menu == "Organización de materias primas":
+    st.subheader("Organización de materias primas")
+    st.write("Aquí mostraremos ocupación de patios, materiales por espacio y fotos del estado actual.")
 
-    st.dataframe(df, use_container_width=True)
-
-# -----------------------
-# ORGANIZACIÓN
-# -----------------------
-elif menu == "Organización MP":
-    st.subheader("Organización de Materias Primas")
-
-    st.write("Patio Norte: Caliza - 80% ocupación")
-    st.write("Patio Sur: Yeso - 60% ocupación")
-
-# -----------------------
-# ABASTECIMIENTO
-# -----------------------
 elif menu == "Abastecimiento":
-    st.subheader("Plan de Abastecimiento")
+    st.subheader("Abastecimiento")
+    st.write("Aquí mostraremos el plan de arribo por materia prima y la ubicación prevista de almacenamiento.")
 
-    st.write("Próximo arribo: Caliza - 25,000 ton")
-    st.write("Ubicación: Patio Norte")
-
-# -----------------------
-# INVENTARIOS
-# -----------------------
-elif menu == "Inventarios":
-    st.subheader("Inventarios")
-
-    st.write("Inventario físico: 50,000 ton")
-    st.write("Inventario sistema: 48,500 ton")
-    st.write("Desviación: 3%")
+elif menu == "Inventarios y desviaciones":
+    st.subheader("Inventarios y desviaciones")
+    st.write("Aquí mostraremos inventario físico, inventario en sistema, desviaciones y cobertura.")
