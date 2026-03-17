@@ -503,7 +503,7 @@ elif menu == "Inventarios":
     st.header("Inventarios y Almacenamiento")
 
     # -----------------------------------
-    # DATOS BASE
+    # DATOS BASE DE ESPACIOS
     # -----------------------------------
     espacios = [
         {
@@ -579,25 +579,61 @@ elif menu == "Inventarios":
     ]
 
     # -----------------------------------
-    # KPIs
+    # DATOS GLOBALES POR MATERIAL
+    # -----------------------------------
+    materiales_data = {
+        "Clinker": {
+            "inventario_actual": 10800,
+            "minimo": 8000,
+            "maximo": 15000,
+            "cobertura_dias": 4.5,
+            "consumo_semana": [2200, 2100, 2400, 2300, 2250, 2100, 2050],
+            "recibo_semana":  [0, 0, 1800, 0, 2200, 0, 0]
+        },
+        "Yeso": {
+            "inventario_actual": 9800,
+            "minimo": 5000,
+            "maximo": 12000,
+            "cobertura_dias": 6.2,
+            "consumo_semana": [900, 850, 920, 880, 910, 870, 860],
+            "recibo_semana":  [0, 1500, 0, 0, 0, 1200, 0]
+        },
+        "Caliza": {
+            "inventario_actual": 13900,
+            "minimo": 10000,
+            "maximo": 18000,
+            "cobertura_dias": 5.1,
+            "consumo_semana": [2600, 2550, 2700, 2500, 2620, 2580, 2490],
+            "recibo_semana":  [3000, 0, 0, 2800, 0, 0, 0]
+        },
+        "Escoria": {
+            "inventario_actual": 14200,
+            "minimo": 7000,
+            "maximo": 16000,
+            "cobertura_dias": 7.0,
+            "consumo_semana": [1500, 1480, 1520, 1490, 1510, 1470, 1450],
+            "recibo_semana":  [0, 2000, 0, 0, 1800, 0, 2200]
+        }
+    }
+
+    # -----------------------------------
+    # KPIs GENERALES ESPACIOS
     # -----------------------------------
     ocupacion_promedio = sum(e["ocupacion"] for e in espacios) / len(espacios)
     espacios_criticos = sum(1 for e in espacios if e["ocupacion"] >= 85)
 
-    # Máx 5 consumos
     consumos = [
         f"{e['consumiendo']} desde {e['espacio']}"
         for e in espacios if e["consumiendo"] != "No aplica"
     ][:5]
 
-    # Máx 3 recibos
     recibos = [
         f"{e['recibiendo']} hacia {e['espacio']}"
         for e in espacios if e["recibiendo"] != "No aplica"
     ][:3]
 
     # -----------------------------------
-    # RESUMEN
+    # RESUMEN DE ALMACENAMIENTO
     # -----------------------------------
     st.markdown("### Resumen de almacenamiento")
 
@@ -612,7 +648,7 @@ elif menu == "Inventarios":
     st.markdown("---")
 
     # -----------------------------------
-    # RESUMEN OPERATIVO
+    # FLUJO OPERATIVO GENERAL
     # -----------------------------------
     st.markdown("### Flujo operativo")
 
@@ -627,18 +663,100 @@ elif menu == "Inventarios":
     st.markdown("---")
 
     # -----------------------------------
-    # ESPACIOS (6 POR FILA)
+    # ESTADO GLOBAL POR MATERIAL
+    # -----------------------------------
+    st.markdown("### Estado global por materia prima")
+
+    material_sel = st.selectbox(
+        "Selecciona un material",
+        list(materiales_data.keys())
+    )
+
+    data_sel = materiales_data[material_sel]
+
+    g1, g2, g3, g4 = st.columns(4)
+    with g1:
+        st.metric("Inventario actual", f"{data_sel['inventario_actual']:,.0f} ton")
+    with g2:
+        st.metric("Mínimo", f"{data_sel['minimo']:,.0f} ton")
+    with g3:
+        st.metric("Máximo", f"{data_sel['maximo']:,.0f} ton")
+    with g4:
+        st.metric("Cobertura", f"{data_sel['cobertura_dias']:.1f} días")
+
+    # Semáforo simple
+    inventario_actual = data_sel["inventario_actual"]
+    minimo = data_sel["minimo"]
+    maximo = data_sel["maximo"]
+
+    if inventario_actual < minimo:
+        st.error(f"🔴 {material_sel} por debajo del mínimo.")
+    elif inventario_actual > maximo:
+        st.warning(f"🟡 {material_sel} por encima del máximo.")
+    else:
+        st.success(f"🟢 {material_sel} dentro del rango esperado.")
+
+    # -----------------------------------
+    # GRÁFICA SEMANAL DEL MATERIAL SELECCIONADO
+    # -----------------------------------
+    st.markdown(f"### Consumo y recibo semanal - {material_sel}")
+
+    dias = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
+
+    chart_data = {
+        "Día": dias,
+        "Consumo": data_sel["consumo_semana"],
+        "Recibo": data_sel["recibo_semana"]
+    }
+
+    st.line_chart(chart_data, x="Día")
+
+    # -----------------------------------
+    # RESUMEN SEMANAL DEL MATERIAL
+    # -----------------------------------
+    total_consumo = sum(data_sel["consumo_semana"])
+    total_recibo = sum(data_sel["recibo_semana"])
+    promedio_consumo = total_consumo / 7
+    promedio_recibo = total_recibo / 7
+
+    r1, r2 = st.columns(2)
+
+    with r1:
+        st.info(f"""
+**Resumen de consumo - última semana**
+
+- Material: {material_sel}
+- Consumo total: {total_consumo:,.0f} ton
+- Consumo promedio diario: {promedio_consumo:,.0f} ton/día
+- Día de mayor consumo: {dias[data_sel['consumo_semana'].index(max(data_sel['consumo_semana']))]}
+- Pico de consumo: {max(data_sel['consumo_semana']):,.0f} ton
+""")
+
+    with r2:
+        st.info(f"""
+**Resumen de recibo - última semana**
+
+- Material: {material_sel}
+- Recibo total: {total_recibo:,.0f} ton
+- Recibo promedio diario: {promedio_recibo:,.0f} ton/día
+- Día de mayor recibo: {dias[data_sel['recibo_semana'].index(max(data_sel['recibo_semana']))]}
+- Pico de recibo: {max(data_sel['recibo_semana']):,.0f} ton
+""")
+
+    st.markdown("---")
+
+    # -----------------------------------
+    # ESTADO POR ESPACIO
     # -----------------------------------
     st.markdown("### Estado por espacio")
 
-    cols = st.columns(5)
+    cols = st.columns(6)
 
     for i, e in enumerate(espacios):
-        with cols[i % 5]:
+        with cols[i % 6]:
 
             st.markdown(f"#### 📦 {e['espacio']}")
 
-            # Estado ocupación
             if e["ocupacion"] >= 90:
                 st.error(f"🔴 {e['ocupacion']}%")
             elif e["ocupacion"] >= 75:
@@ -648,7 +766,6 @@ elif menu == "Inventarios":
 
             st.progress(e["ocupacion"] / 100)
 
-            # Inventario por material
             st.write("**Inventario:**")
             for mp, ton in e["materiales"].items():
                 st.write(f"- {mp}: {ton:,.0f} ton")
@@ -666,6 +783,11 @@ elif menu == "Inventarios":
         if e["ocupacion"] >= 90:
             alertas.append(f"{e['espacio']} en ocupación crítica ({e['ocupacion']}%).")
 
+    if inventario_actual < minimo:
+        alertas.append(f"{material_sel} se encuentra por debajo del inventario mínimo.")
+    elif inventario_actual > maximo:
+        alertas.append(f"{material_sel} se encuentra por encima del inventario máximo.")
+
     if alertas:
         for a in alertas:
             st.warning(f"⚠️ {a}")
@@ -680,17 +802,21 @@ elif menu == "Inventarios":
     st.markdown("### Recomendación operativa")
 
     st.info(f"""
-    La operación presenta una ocupación promedio de **{ocupacion_promedio:.1f}%**
-    con **{espacios_criticos} espacios en condición crítica**.
+La operación presenta una ocupación promedio de **{ocupacion_promedio:.1f}%**
+con **{espacios_criticos} espacios en condición crítica**.
 
-    Se identifican flujos activos de consumo y recepción, por lo que es clave
-    mantener el balance entre ingreso de material y disponibilidad de almacenamiento.
+Para **{material_sel}**, el inventario actual es de **{inventario_actual:,.0f} ton**,
+con una cobertura estimada de **{data_sel['cobertura_dias']:.1f} días**.
 
-    **Acciones sugeridas:**
-    - Liberar espacios con alta ocupación.
-    - Priorizar consumo desde posiciones críticas.
-    - Controlar el ingreso de material hacia espacios disponibles.
-    """)
+En la última semana se registró un consumo total de **{total_consumo:,.0f} ton**
+y un recibo total de **{total_recibo:,.0f} ton**.
+
+**Acciones sugeridas:**
+- Mantener seguimiento diario del material seleccionado.
+- Validar balance entre consumo, recibo y cobertura.
+- Priorizar decisiones sobre materiales cercanos al mínimo.
+- Liberar espacios con alta ocupación para sostener flexibilidad operativa.
+""")
 # ABASTECIMIENTO
 # -----------------------------------
 elif menu == "Abastecimiento":
