@@ -37,31 +37,16 @@ if menu == "Inicio":
 
     st.markdown("""
     ## Operación Integrada de Materias Primas
-    
-    **⛏️ Minería → 📦 Abastecimiento → 🚢 Descargue → 🏗️ Almacenamiento → ⚙️ Molienda**
+
+    ⛏️ **Minería** → 📦 **Abastecimiento** → 🚢 **Descargue** → 🏗️ **Almacenamiento** → ⚙️ **Molienda**
     """)
 
-    st.info(
-        "Esta aplicación integra la operación de materias primas, permitiendo "
-        "visualizar equipos, descargues, inventarios, abastecimiento y recursos."
-    )
+    st.markdown("---")
 
-    st.markdown("### Acceso rápido")
-    c1, c2, c3 = st.columns(3)
-    c4, c5, c6 = st.columns(3)
-
-    with c1:
-        st.success("🚜 Equipos operativos")
-    with c2:
-        st.success("👷 Gestión de personal")
-    with c3:
-        st.success("🚢 Descargues 2026")
-    with c4:
-        st.success("🏗️ Organización MP")
-    with c5:
-        st.success("📦 Abastecimiento")
-    with c6:
-        st.success("📊 Inventarios")
+    st.markdown("""
+    Esta plataforma permite visualizar de forma integrada la operación de materias primas, 
+    incluyendo equipos, descargues, inventarios y abastecimiento, facilitando la toma de decisiones operativas.
+    """)
 
 # -----------------------------
 # RESUMEN OPERATIVO
@@ -126,7 +111,13 @@ elif menu == "Gestión de personal":
     c3.metric("Total personal", "5")
 
     df_personal = pd.DataFrame({
-        "Cargo": ["Operador cargador", "Operador cargador", "Operador cargador", "Operador cargador", "Supervisor"],
+        "Cargo": [
+            "Operador cargador",
+            "Operador cargador",
+            "Operador cargador",
+            "Operador cargador",
+            "Supervisor"
+        ],
         "Turno": ["Día", "Día", "Noche", "Noche", "Día"]
     })
     st.dataframe(df_personal, use_container_width=True, hide_index=True)
