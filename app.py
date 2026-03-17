@@ -584,7 +584,7 @@ elif menu == "Inventarios":
     # -----------------------------------
     # INVENTARIO HISTÓRICO (CLAVE 🔥)
     # -----------------------------------
-    st.markdown("### Inventario semanal")
+    st.markdown("### Inventario")
 
     dias = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
 
