@@ -85,6 +85,9 @@ if menu == "Inicio":
 # -----------------------------------
 # EQUIPOS
 # -----------------------------------
+# -----------------------------------
+# EQUIPOS
+# -----------------------------------
 elif menu == "Equipos":
 
     st.header("Equipos Operativos")
@@ -97,6 +100,10 @@ elif menu == "Equipos":
         st.metric("Disponibles", "2")
     with c2:
         st.metric("En mantenimiento", "1")
+    with c3:
+        st.metric("Horas acumuladas", "368 h")
+    with c4:
+        st.metric("Combustible promedio", "62%")
 
     st.markdown("---")
 
@@ -106,24 +113,24 @@ elif menu == "Equipos":
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.subheader("Cargador 102")
-        st.success("Disponible")
+        st.subheader("🚜 Cargador 102")
+        st.success("🟢 Disponible")
         st.write("**Horas trabajadas:** 120 h")
         st.write("**Combustible:** 85%")
         st.write("**Próximo mtto:** 20 h")
         st.write("**Último mtto:** OK")
 
     with col2:
-        st.subheader("Cargador 103")
-        st.info("En operación")
+        st.subheader("🚜 Cargador 103")
+        st.info("🔵 En operación")
         st.write("**Horas trabajadas:** 98 h")
         st.write("**Combustible:** 60%")
         st.write("**Próximo mtto:** 35 h")
         st.write("**Último mtto:** OK")
 
     with col3:
-        st.subheader("Cargador 109")
-        st.error("En mantenimiento")
+        st.subheader("🚜 Cargador 109")
+        st.error("🔴 En mantenimiento")
         st.write("**Horas trabajadas:** 150 h")
         st.write("**Combustible:** 40%")
         st.write("**Próximo mtto:** En proceso")
@@ -136,14 +143,14 @@ elif menu == "Equipos":
     col4, col5 = st.columns(2)
 
     with col4:
-        st.subheader("Lavaruedas")
-        st.success("Operativo")
+        st.subheader("🧼 Lavaruedas")
+        st.success("🟢 Operativo")
         st.write("**Estado actual:** Disponible")
         st.write("**Última revisión:** OK")
 
     with col5:
-        st.subheader("Parrillas")
-        st.success("Operativas")
+        st.subheader("🟫 Parrillas")
+        st.success("🟢 Operativas")
         st.write("**Estado actual:** Sin novedad")
         st.write("**Última revisión:** OK")
 # -----------------------------------
