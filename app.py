@@ -33,10 +33,11 @@ menu = st.sidebar.selectbox(
 # INICIO
 # -----------------------------
 if menu == "Inicio":
-    st.subheader("Vista integrada de la operación")
+
+    st.subheader("Visión general")
 
     st.markdown("""
-    ## Operación Integrada de Materias Primas
+    ## Cadena operativa de materias primas
 
     ⛏️ **Minería** → 📦 **Abastecimiento** → 🚢 **Descargue** → 🏗️ **Almacenamiento** → ⚙️ **Molienda**
     """)
@@ -44,8 +45,11 @@ if menu == "Inicio":
     st.markdown("---")
 
     st.markdown("""
-    Esta plataforma permite visualizar de forma integrada la operación de materias primas, 
-    incluyendo equipos, descargues, inventarios y abastecimiento, facilitando la toma de decisiones operativas.
+    Este panel permite monitorear en tiempo real el estado de la operación,
+    integrando equipos, descargues, inventarios y abastecimiento.
+
+    Facilita la identificación de desviaciones, cuellos de botella y oportunidades de mejora,
+    soportando la toma de decisiones operativas.
     """)
 
 # -----------------------------
