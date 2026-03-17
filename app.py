@@ -36,22 +36,41 @@ if menu == "Inicio":
     with col2:
         st.image("MPImage.png", width=500)
 
-    # 🔥 KPIs OPERATIVOS (LO MÁS IMPORTANTE)
-    st.markdown("### Estado actual de la operación")
+    
+    # 🔥 KPIs OPERATIVOS
+st.markdown("### Estado actual de la operación")
 
-    col1, col2, col3, col4 = st.columns(4)
+# FILA 1
+col1, col2, col3, col4 = st.columns(4)
 
-    with col1:
-        st.metric("🚜 Cargadores disponibles", 2, delta="1 en mantenimiento")
+with col1:
+    st.metric("🚜 Cargadores", "2", delta="1 en mtto")
 
-    with col2:
-        st.metric("👷 Operadores en turno", 5)
+with col2:
+    st.metric("👷 Operadores", "2")
 
-    with col3:
-        st.metric("📦 MP programadas", 3)
+with col3:
+    st.metric("👨‍💼 Supervisor", "1")
 
-    with col4:
-        st.metric("🚢 Material recibido", "3,300 ton")
+with col4:
+    st.metric("🚢 Descargues activos", "2")
+    st.caption("Caliza / Yeso")
+
+# FILA 2
+col1, col2, col3, col4 = st.columns(4)
+
+with col1:
+    st.metric("📦 Descargue hoy", "3,300 ton")
+
+with col2:
+    st.metric("🏗️ Ocupación patios", "78%")
+
+with col3:
+    st.metric("⚠️ MP críticas", "2")
+    st.caption("Yeso / Puzolana")
+
+with col4:
+    st.metric("📍 En proceso", "Caliza")
 
     # CONTEXTO
     st.markdown("## Visión general")
