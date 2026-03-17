@@ -1,6 +1,9 @@
 import streamlit as st
 import pandas as pd
 
+# -----------------------------
+# CONFIGURACIÓN
+# -----------------------------
 st.set_page_config(
     page_title="Operación Integrada MP",
     layout="wide",
@@ -52,6 +55,8 @@ if menu == "Inicio":
         "https://images.unsplash.com/photo-1581091012184-5c2b4e9c7b1c",
         use_container_width=True
     )
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
     st.markdown("""
     ### Operación de Materias Primas
@@ -114,6 +119,7 @@ if menu == "Inicio":
 # RESUMEN OPERATIVO
 # -----------------------------
 elif menu == "Resumen operativo":
+
     st.subheader("Resumen operativo del turno")
 
     c1, c2, c3, c4, c5 = st.columns(5)
@@ -129,19 +135,19 @@ elif menu == "Resumen operativo":
     izq, der = st.columns(2)
 
     with izq:
-        st.markdown("### Materias primas programadas a llegar en el turno")
+        st.markdown("### Materias primas programadas")
         df_programadas = pd.DataFrame({
             "Materia prima": ["Caliza", "Yeso"],
-            "Cantidad programada (ton)": [2500, 800],
-            "Ubicación prevista": ["Patio Norte", "Patio Sur"]
+            "Cantidad (ton)": [2500, 800],
+            "Ubicación": ["Patio Norte", "Patio Sur"]
         })
         st.dataframe(df_programadas, use_container_width=True, hide_index=True)
 
     with der:
-        st.markdown("### Material recibido en el turno anterior")
+        st.markdown("### Material recibido turno anterior")
         df_recibido = pd.DataFrame({
             "Materia prima": ["Caliza", "Puzolana"],
-            "Cantidad recibida (ton)": [900, 350],
+            "Cantidad (ton)": [900, 350],
             "Ubicación": ["Patio Norte", "Patio 3"]
         })
         st.dataframe(df_recibido, use_container_width=True, hide_index=True)
@@ -151,39 +157,39 @@ elif menu == "Resumen operativo":
 # -----------------------------
 elif menu == "Equipos operativos":
     st.subheader("Equipos operativos")
-    st.write("Sección en construcción.")
+    st.info("Aquí veremos disponibilidad, horas, combustible y mantenimiento.")
 
 # -----------------------------
 # GESTIÓN DE PERSONAL
 # -----------------------------
 elif menu == "Gestión de personal":
     st.subheader("Gestión de personal")
-    st.write("Sección en construcción.")
+    st.info("Aquí veremos recursos, turnos y cobertura operativa.")
 
 # -----------------------------
 # DESCARGUES
 # -----------------------------
 elif menu == "Descargues 2026":
     st.subheader("Descargues 2026")
-    st.write("Sección en construcción.")
+    st.info("Aquí veremos histórico de descargues y rendimiento.")
 
 # -----------------------------
-# ORGANIZACIÓN DE MATERIAS PRIMAS
+# ORGANIZACIÓN MP
 # -----------------------------
 elif menu == "Organización de materias primas":
     st.subheader("Organización de materias primas")
-    st.write("Sección en construcción.")
+    st.info("Aquí veremos patios, ocupación y distribución.")
 
 # -----------------------------
 # ABASTECIMIENTO
 # -----------------------------
 elif menu == "Abastecimiento":
     st.subheader("Abastecimiento")
-    st.write("Sección en construcción.")
+    st.info("Aquí veremos plan de arribo y almacenamiento.")
 
 # -----------------------------
 # INVENTARIOS
 # -----------------------------
 elif menu == "Inventarios y desviaciones":
     st.subheader("Inventarios y desviaciones")
-    st.write("Sección en construcción.")
+    st.info("Aquí veremos físico vs sistema y cobertura.")
