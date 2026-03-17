@@ -97,10 +97,6 @@ elif menu == "Equipos":
         st.metric("Disponibles", "2")
     with c2:
         st.metric("En mantenimiento", "1")
-    with c3:
-        st.metric("Horas acumuladas", "368 h")
-    with c4:
-        st.metric("Combustible promedio", "62%")
 
     st.markdown("---")
 
