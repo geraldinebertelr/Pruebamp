@@ -1,12 +1,16 @@
 import streamlit as st
 
+# -----------------------------------
 # CONFIGURACIÓN GENERAL
+# -----------------------------------
 st.set_page_config(
     page_title="Operación Materias Primas",
     layout="wide"
 )
 
+# -----------------------------------
 # MENÚ LATERAL
+# -----------------------------------
 menu = st.sidebar.selectbox(
     "Navegación",
     [
@@ -19,19 +23,17 @@ menu = st.sidebar.selectbox(
     ]
 )
 
-# ---------------------------
+# -----------------------------------
 # INICIO
-# ---------------------------
+# -----------------------------------
 if menu == "Inicio":
 
     st.title("Operación de Materias Primas")
 
-    # IMAGEN PRINCIPAL (ILUSTRACIÓN)
-    st.markdown("""
-<div style="display: flex; justify-content: center;">
-    <img src="MPImage.png" style="height: 280px; border-radius: 10px;">
-</div>
-""", unsafe_allow_html=True)
+    # 🔥 IMAGEN CENTRADA (SIN ERRORES)
+    col1, col2, col3 = st.columns([1,2,1])
+    with col2:
+        st.image("MPImage.png", width=750)
 
     st.markdown("## Visión general")
 
@@ -43,9 +45,9 @@ if menu == "Inicio":
     soportando la toma de decisiones operativas.
     """)
 
-# ---------------------------
+# -----------------------------------
 # EQUIPOS
-# ---------------------------
+# -----------------------------------
 elif menu == "Equipos":
 
     st.header("Equipos Operativos")
@@ -70,62 +72,73 @@ elif menu == "Equipos":
         st.write("Combustible: 40%")
         st.write("Próximo mtto: En proceso")
 
-# ---------------------------
+# -----------------------------------
 # PERSONAL
-# ---------------------------
+# -----------------------------------
 elif menu == "Personal":
 
     st.header("Gestión de Personal")
 
-    st.metric("Operadores en turno", 5)
-    st.metric("Supervisores en turno", 1)
+    col1, col2 = st.columns(2)
 
-    st.write("Turnos activos:")
+    with col1:
+        st.metric("Operadores en turno", 5)
+
+    with col2:
+        st.metric("Supervisores en turno", 1)
+
+    st.write("### Turnos activos")
     st.write("- Turno A: 3 operadores")
     st.write("- Turno B: 2 operadores")
 
-# ---------------------------
+# -----------------------------------
 # DESCARGUES
-# ---------------------------
+# -----------------------------------
 elif menu == "Descargues":
 
     st.header("Descargues de Barcos")
 
-    st.write("Material recibido último turno:")
+    st.write("### Último turno")
     st.write("- Caliza: 2,500 ton")
     st.write("- Yeso: 800 ton")
 
-    st.write("Tiempo promedio descargue:")
-    st.write("8 horas")
+    st.write("### Tiempo promedio de descargue")
+    st.metric("Horas", "8 h")
 
-# ---------------------------
+# -----------------------------------
 # INVENTARIOS
-# ---------------------------
+# -----------------------------------
 elif menu == "Inventarios":
 
     st.header("Inventarios")
 
-    st.write("Stock actual vs sistema:")
+    col1, col2 = st.columns(2)
 
-    st.write("- Caliza: 10,200 ton (Sistema: 10,000 ton)")
-    st.write("- Yeso: 3,500 ton (Sistema: 3,600 ton)")
+    with col1:
+        st.subheader("Stock físico")
+        st.write("- Caliza: 10,200 ton")
+        st.write("- Yeso: 3,500 ton")
 
-    st.write("Desviaciones:")
+    with col2:
+        st.subheader("Sistema")
+        st.write("- Caliza: 10,000 ton")
+        st.write("- Yeso: 3,600 ton")
+
+    st.write("### Desviaciones")
     st.write("- Caliza: +2%")
     st.write("- Yeso: -3%")
 
-# ---------------------------
+# -----------------------------------
 # ABASTECIMIENTO
-# ---------------------------
+# -----------------------------------
 elif menu == "Abastecimiento":
 
     st.header("Plan de Abastecimiento")
 
-    st.write("Arribos programados:")
-
+    st.write("### Arribos programados")
     st.write("- Caliza: 15 marzo")
     st.write("- Yeso: 18 marzo")
 
-    st.write("Ubicación de almacenamiento:")
+    st.write("### Ubicación de almacenamiento")
     st.write("- Patio Norte")
     st.write("- Patio Horno")
