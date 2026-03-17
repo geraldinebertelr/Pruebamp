@@ -28,51 +28,50 @@ menu = st.sidebar.selectbox(
 # -----------------------------------
 if menu == "Inicio":
 
-    # TÍTULO
     st.title("Operación de Materias Primas")
 
-    # 🔥 IMAGEN MÁS PROTAGONISTA
-    col1, col2, col3 = st.columns([1,3,1])
+    # IMAGEN PRINCIPAL
+    col1, col2, col3 = st.columns([1, 3, 1])
     with col2:
-        st.image("MPImage.png", width=500)
+        st.image("MPImage.png", width=900)
 
-    
-    # 🔥 KPIs OPERATIVOS
-st.markdown("### Estado actual de la operación")
+    # KPIs GENERALES
+    st.markdown("### Estado actual de la operación")
 
-# FILA 1
-col1, col2, col3, col4 = st.columns(4)
+    # Fila 1
+    col1, col2, col3, col4 = st.columns(4)
 
-with col1:
-    st.metric("🚜 Cargadores", "2", delta="1 en mtto")
+    with col1:
+        st.metric("🚜 Cargadores", "2", delta="1 en mtto")
 
-with col2:
-    st.metric("👷 Operadores", "2")
+    with col2:
+        st.metric("👷 Operadores", "2")
 
-with col3:
-    st.metric("👨‍💼 Supervisor", "1")
+    with col3:
+        st.metric("👨‍💼 Supervisor", "1")
 
-with col4:
-    st.metric("🚢 Descargues activos", "2")
-    st.caption("Caliza / Yeso")
+    with col4:
+        st.metric("🚢 Descargues activos", "2")
+        st.caption("Caliza / Yeso")
 
-# FILA 2
-col1, col2, col3, col4 = st.columns(4)
+    # Fila 2
+    col1, col2, col3, col4 = st.columns(4)
 
-with col1:
-    st.metric("📦 Descargue hoy", "3,300 ton")
+    with col1:
+        st.metric("📦 Descargue hoy", "3,300 ton")
 
-with col2:
-    st.metric("🏗️ Ocupación patios", "78%")
+    with col2:
+        st.metric("🏗️ Ocupación patios", "78%")
 
-with col3:
-    st.metric("⚠️ MP críticas", "2")
-    st.caption("Yeso / Puzolana")
+    with col3:
+        st.metric("⚠️ MP críticas", "2")
+        st.caption("Yeso / Puzolana")
 
-with col4:
-    st.metric("📍 En proceso", "Caliza")
+    with col4:
+        st.metric("📍 En proceso", "Caliza")
 
-    # CONTEXTO
+    st.markdown("---")
+
     st.markdown("## Visión general")
 
     st.markdown("""
@@ -82,6 +81,7 @@ with col4:
     Facilita la identificación de desviaciones, cuellos de botella y oportunidades de mejora,
     soportando la toma de decisiones operativas.
     """)
+
 # -----------------------------------
 # EQUIPOS
 # -----------------------------------
@@ -96,18 +96,26 @@ elif menu == "Equipos":
         st.write("Horas trabajadas: 120 h")
         st.write("Combustible: 85%")
         st.write("Próximo mtto: 20 h")
+        st.write("Último mtto: OK")
 
     with col2:
         st.metric("Cargador 103", "En operación")
         st.write("Horas trabajadas: 98 h")
         st.write("Combustible: 60%")
         st.write("Próximo mtto: 35 h")
+        st.write("Último mtto: OK")
 
     with col3:
         st.metric("Cargador 109", "En mantenimiento")
         st.write("Horas trabajadas: 150 h")
         st.write("Combustible: 40%")
         st.write("Próximo mtto: En proceso")
+        st.write("Último mtto: Observación")
+
+    st.markdown("---")
+    st.subheader("Otros equipos")
+    st.write("- Lavaruedas: Operativo")
+    st.write("- Parrillas: Operativas")
 
 # -----------------------------------
 # PERSONAL
@@ -116,31 +124,47 @@ elif menu == "Personal":
 
     st.header("Gestión de Personal")
 
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.metric("Operadores en turno", 5)
+        st.metric("Operadores en turno", 2)
 
     with col2:
-        st.metric("Supervisores en turno", 1)
+        st.metric("Supervisor en turno", 1)
 
-    st.write("### Turnos activos")
-    st.write("- Turno A: 3 operadores")
-    st.write("- Turno B: 2 operadores")
+    with col3:
+        st.metric("Cobertura operativa", "100%")
+
+    st.write("### Turno actual")
+    st.write("- Operador 1: Cargador 102")
+    st.write("- Operador 2: Cargador 103")
+    st.write("- Supervisor: Activo")
 
 # -----------------------------------
 # DESCARGUES
 # -----------------------------------
 elif menu == "Descargues":
 
-    st.header("Descargues de Barcos")
+    st.header("Descargues")
 
-    st.write("### Último turno")
-    st.write("- Caliza: 2,500 ton")
-    st.write("- Yeso: 800 ton")
+    col1, col2, col3 = st.columns(3)
 
-    st.write("### Tiempo promedio de descargue")
-    st.metric("Horas", "8 h")
+    with col1:
+        st.metric("Descargues activos", "2")
+
+    with col2:
+        st.metric("Toneladas hoy", "3,300 ton")
+
+    with col3:
+        st.metric("Tiempo promedio", "8 h")
+
+    st.write("### Material en descargue")
+    st.write("- Caliza")
+    st.write("- Yeso")
+
+    st.write("### Histórico del día")
+    st.write("- Barco 1: Caliza - 2,500 ton")
+    st.write("- Barco 2: Yeso - 800 ton")
 
 # -----------------------------------
 # INVENTARIOS
@@ -149,21 +173,25 @@ elif menu == "Inventarios":
 
     st.header("Inventarios")
 
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.subheader("Stock físico")
-        st.write("- Caliza: 10,200 ton")
-        st.write("- Yeso: 3,500 ton")
+        st.metric("Ocupación patios", "78%")
 
     with col2:
-        st.subheader("Sistema")
-        st.write("- Caliza: 10,000 ton")
-        st.write("- Yeso: 3,600 ton")
+        st.metric("MP críticas", "2")
 
-    st.write("### Desviaciones")
-    st.write("- Caliza: +2%")
-    st.write("- Yeso: -3%")
+    with col3:
+        st.metric("Desviación total", "3%")
+
+    st.write("### Existencia física vs sistema")
+    st.write("- Caliza: 10,200 ton | Sistema: 10,000 ton")
+    st.write("- Yeso: 3,500 ton | Sistema: 3,600 ton")
+    st.write("- Puzolana: 2,800 ton | Sistema: 2,700 ton")
+
+    st.write("### Materias primas críticas")
+    st.write("- Yeso")
+    st.write("- Puzolana")
 
 # -----------------------------------
 # ABASTECIMIENTO
@@ -172,10 +200,16 @@ elif menu == "Abastecimiento":
 
     st.header("Plan de Abastecimiento")
 
-    st.write("### Arribos programados")
-    st.write("- Caliza: 15 marzo")
-    st.write("- Yeso: 18 marzo")
+    col1, col2 = st.columns(2)
 
-    st.write("### Ubicación de almacenamiento")
-    st.write("- Patio Norte")
-    st.write("- Patio Horno")
+    with col1:
+        st.subheader("Arribos programados")
+        st.write("- Caliza: 15 marzo")
+        st.write("- Yeso: 18 marzo")
+        st.write("- Puzolana: 20 marzo")
+
+    with col2:
+        st.subheader("Ubicación de almacenamiento")
+        st.write("- Caliza: Patio Norte")
+        st.write("- Yeso: Patio Sur")
+        st.write("- Puzolana: Patio Horno")
