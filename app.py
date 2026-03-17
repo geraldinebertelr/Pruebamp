@@ -27,7 +27,11 @@ if menu == "Inicio":
     st.title("Operación de Materias Primas")
 
     # IMAGEN PRINCIPAL (ILUSTRACIÓN)
-    st.image("MPImage.png", use_container_width=True)
+    st.markdown("""
+<div style="display: flex; justify-content: center;">
+    <img src="MPImage.png" style="height: 280px; border-radius: 10px;">
+</div>
+""", unsafe_allow_html=True)
 
     st.markdown("## Visión general")
 
