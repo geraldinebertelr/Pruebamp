@@ -1,26 +1,13 @@
 import streamlit as st
 import pandas as pd
 
-# -----------------------------
-# CONFIGURACIÓN
-# -----------------------------
 st.set_page_config(
     page_title="Operación Integrada MP",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    layout="wide"
 )
 
 # -----------------------------
-# NAVEGACIÓN
-# -----------------------------
-if "menu" not in st.session_state:
-    st.session_state.menu = "Inicio"
-
-def go_to(section):
-    st.session_state.menu = section
-
-# -----------------------------
-# HEADER
+# TÍTULO
 # -----------------------------
 st.title("Operación Integrada de Materias Primas")
 st.caption("Visualización integrada de la operación")
@@ -28,7 +15,7 @@ st.caption("Visualización integrada de la operación")
 # -----------------------------
 # MENÚ LATERAL
 # -----------------------------
-menu = st.sidebar.radio(
+menu = st.sidebar.selectbox(
     "Módulos",
     [
         "Inicio",
@@ -39,108 +26,50 @@ menu = st.sidebar.radio(
         "Organización de materias primas",
         "Abastecimiento",
         "Inventarios y desviaciones"
-    ],
-    key="menu"
+    ]
 )
 
 # -----------------------------
 # INICIO
 # -----------------------------
 if menu == "Inicio":
-
     st.subheader("Vista integrada de la operación")
 
-    # 🔥 BANNER LIMPIO CON ICONOS
     st.markdown("""
-    <div style="
-        background: linear-gradient(135deg, #0f3c68, #1f6aa5);
-        padding: 30px;
-        border-radius: 15px;
-        text-align: center;
-        color: white;
-    ">
-
-        <h2 style="margin-bottom:10px;">
-            Operación Integrada de Materias Primas
-        </h2>
-
-        <div style="font-size:28px;">
-            ⛏️ ➜ 📦 ➜ 🚢 ➜ 🏗️ ➜ ⚙️
-        </div>
-
-        <div style="margin-top:8px; font-size:14px;">
-            Minería | Abastecimiento | Descargue | Almacenamiento | Molienda
-        </div>
-
-    </div>
-    """, unsafe_allow_html=True)
-
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    st.markdown("""
-    Esta aplicación integra la operación de materias primas, permitiendo visualizar
-    equipos, descargues, inventarios, abastecimiento y recursos en una sola vista.
+    ## Operación Integrada de Materias Primas
+    
+    **⛏️ Minería → 📦 Abastecimiento → 🚢 Descargue → 🏗️ Almacenamiento → ⚙️ Molienda**
     """)
 
-    st.markdown("---")
+    st.info(
+        "Esta aplicación integra la operación de materias primas, permitiendo "
+        "visualizar equipos, descargues, inventarios, abastecimiento y recursos."
+    )
 
-    # 🔁 FLUJO OPERATIVO
-    st.markdown("### Flujo operativo")
-
-    f1, f2, f3, f4, f5 = st.columns(5)
-
-    with f1:
-        st.info("⛏️ Minería")
-    with f2:
-        st.info("📦 Abastecimiento")
-    with f3:
-        st.info("🚢 Descargue")
-    with f4:
-        st.info("🏗️ Almacenamiento")
-    with f5:
-        st.info("⚙️ Molienda")
-
-    st.markdown("---")
-
-    # 🚀 ACCESOS RÁPIDOS
     st.markdown("### Acceso rápido")
+    c1, c2, c3 = st.columns(3)
+    c4, c5, c6 = st.columns(3)
 
-    b1, b2, b3 = st.columns(3)
-    b4, b5, b6 = st.columns(3)
-
-    with b1:
-        if st.button("🚜 Equipos operativos", use_container_width=True):
-            go_to("Equipos operativos")
-
-    with b2:
-        if st.button("👷 Gestión de personal", use_container_width=True):
-            go_to("Gestión de personal")
-
-    with b3:
-        if st.button("🚢 Descargues 2026", use_container_width=True):
-            go_to("Descargues 2026")
-
-    with b4:
-        if st.button("🏗️ Organización MP", use_container_width=True):
-            go_to("Organización de materias primas")
-
-    with b5:
-        if st.button("📦 Abastecimiento", use_container_width=True):
-            go_to("Abastecimiento")
-
-    with b6:
-        if st.button("📊 Inventarios", use_container_width=True):
-            go_to("Inventarios y desviaciones")
+    with c1:
+        st.success("🚜 Equipos operativos")
+    with c2:
+        st.success("👷 Gestión de personal")
+    with c3:
+        st.success("🚢 Descargues 2026")
+    with c4:
+        st.success("🏗️ Organización MP")
+    with c5:
+        st.success("📦 Abastecimiento")
+    with c6:
+        st.success("📊 Inventarios")
 
 # -----------------------------
 # RESUMEN OPERATIVO
 # -----------------------------
 elif menu == "Resumen operativo":
-
     st.subheader("Resumen operativo del turno")
 
     c1, c2, c3, c4, c5 = st.columns(5)
-
     c1.metric("Cargadores disponibles", "3")
     c2.metric("Operadores en turno", "4")
     c3.metric("Supervisores en turno", "1")
@@ -174,39 +103,90 @@ elif menu == "Resumen operativo":
 # -----------------------------
 elif menu == "Equipos operativos":
     st.subheader("Equipos operativos")
-    st.info("Aquí veremos disponibilidad, horas, combustible y mantenimiento de los cargadores 102, 103 y 109.")
+
+    df_equipos = pd.DataFrame({
+        "Equipo": ["102", "103", "109", "Lavaruedas", "Parrillas"],
+        "Disponibilidad (%)": [95, 90, 88, 98, 100],
+        "Horas trabajo": [180, 200, 210, 120, 95],
+        "Combustible": [320, 350, 370, 0, 0],
+        "Próx. mtto": ["50 h", "30 h", "20 h", "15 días", "OK"],
+        "Último mtto": ["OK", "Observación", "Crítico", "OK", "OK"]
+    })
+    st.dataframe(df_equipos, use_container_width=True, hide_index=True)
 
 # -----------------------------
 # GESTIÓN DE PERSONAL
 # -----------------------------
 elif menu == "Gestión de personal":
     st.subheader("Gestión de personal")
-    st.info("Aquí veremos operadores, supervisores y turnos.")
+
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Operadores", "4")
+    c2.metric("Supervisores", "1")
+    c3.metric("Total personal", "5")
+
+    df_personal = pd.DataFrame({
+        "Cargo": ["Operador cargador", "Operador cargador", "Operador cargador", "Operador cargador", "Supervisor"],
+        "Turno": ["Día", "Día", "Noche", "Noche", "Día"]
+    })
+    st.dataframe(df_personal, use_container_width=True, hide_index=True)
 
 # -----------------------------
 # DESCARGUES
 # -----------------------------
 elif menu == "Descargues 2026":
     st.subheader("Descargues 2026")
-    st.info("Aquí veremos tiempos de descargue, materiales y costos.")
+
+    df_descargues = pd.DataFrame({
+        "Barco": ["B1", "B2", "B3"],
+        "Material": ["Caliza", "Yeso", "Puzolana"],
+        "Toneladas": [20000, 15000, 18000],
+        "Tiempo (h)": [40, 35, 42],
+        "Rendimiento (ton/h)": [500, 428, 429]
+    })
+    st.dataframe(df_descargues, use_container_width=True, hide_index=True)
 
 # -----------------------------
 # ORGANIZACIÓN MP
 # -----------------------------
 elif menu == "Organización de materias primas":
     st.subheader("Organización de materias primas")
-    st.info("Aquí veremos ocupación de patios y distribución de materiales.")
+
+    df_mp = pd.DataFrame({
+        "Espacio": ["Patio Norte", "Patio Sur", "Patio 3"],
+        "Material": ["Caliza", "Yeso", "Puzolana"],
+        "% utilización": [80, 60, 45]
+    })
+    st.dataframe(df_mp, use_container_width=True, hide_index=True)
 
 # -----------------------------
 # ABASTECIMIENTO
 # -----------------------------
 elif menu == "Abastecimiento":
     st.subheader("Abastecimiento")
-    st.info("Aquí veremos plan de arribo y almacenamiento por MP.")
+
+    df_abast = pd.DataFrame({
+        "MP": ["Caliza", "Yeso"],
+        "Cantidad programada (ton)": [25000, 5000],
+        "Ubicación prevista": ["Patio Norte", "Patio Sur"]
+    })
+    st.dataframe(df_abast, use_container_width=True, hide_index=True)
 
 # -----------------------------
 # INVENTARIOS
 # -----------------------------
 elif menu == "Inventarios y desviaciones":
     st.subheader("Inventarios y desviaciones")
-    st.info("Aquí veremos inventario físico vs sistema y desviaciones.")
+
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Inventario físico", "50.000 ton")
+    c2.metric("Inventario sistema", "48.500 ton")
+    c3.metric("Desviación", "3%")
+
+    df_inv = pd.DataFrame({
+        "Materia prima": ["Caliza", "Yeso", "Puzolana"],
+        "Físico (ton)": [30000, 10000, 10000],
+        "Sistema (ton)": [29000, 9800, 9700],
+        "Desviación (%)": [3.4, 2.0, 3.1]
+    })
+    st.dataframe(df_inv, use_container_width=True, hide_index=True)
