@@ -376,7 +376,6 @@ elif menu == "Descargues":
     # KPIs GENERALES
     # -----------------------------------
     activos = sum(1 for d in descargues if d["estado"] == "Actual")
-    ton_hoy_referencia = sum(d["ton_descargadas"] for d in descargues if d["estado"] == "Actual")
     pendientes_total = sum(max(d["ton_total_barco"] - d["ton_descargadas"], 0) for d in descargues if d["estado"] == "Actual")
 
     col1, col2, col3, col4 = st.columns(4)
@@ -408,32 +407,40 @@ elif menu == "Descargues":
 
             pendiente = max(d["ton_total_barco"] - d["ton_descargadas"], 0)
             rata_real = d["ton_descargadas"] / d["dias_transcurridos"] if d["dias_transcurridos"] > 0 else 0
+            porcentaje = d["ton_descargadas"] / d["ton_total_barco"] if d["ton_total_barco"] > 0 else 0
             cumplimiento = "Cumpliendo" if rata_real >= rata_pactada_dia else "No cumpliendo"
 
+            # ESTADO
             if d["estado"] == "Actual":
                 st.success("🟢 Estado: Actual")
             else:
                 st.info(f"📅 Último descargue: {d['ultimo_descargue']}")
 
+            # INFO GENERAL
             st.write(f"**Toneladas del barco:** {d['ton_total_barco']:,.0f} ton")
             st.write(f"**Toneladas descargadas:** {d['ton_descargadas']:,.0f} ton")
             st.write(f"**Pendiente por traer de puerto:** {pendiente:,.0f} ton")
+
+            # % AVANCE
+            st.write(f"**% traído a planta:** {porcentaje*100:,.1f}%")
+            st.progress(porcentaje)
+
+            # PRODUCTIVIDAD
             st.write(f"**Días transcurridos:** {d['dias_transcurridos']}")
-
             st.write(f"**Rata real:** {rata_real:,.0f} ton/día")
-            st.write(f"**Rata pactada:** {rata_pactada_dia:,.0f} ton/día")
 
+            # CUMPLIMIENTO
             if cumplimiento == "Cumpliendo":
-                st.success("✅ Cumpliendo con la rata pactada")
+                st.success("✅ Cumpliendo rata")
             else:
-                st.warning("⚠️ No está cumpliendo con la rata pactada")
+                st.warning("⚠️ Bajo la rata pactada")
 
     st.markdown("---")
 
     # -----------------------------------
     # RESUMEN OPERATIVO
     # -----------------------------------
-    st.markdown("### Resumen operativo del descargue actual")
+    st.markdown("### Resumen operativo")
 
     actuales = [d for d in descargues if d["estado"] == "Actual"]
 
@@ -441,20 +448,21 @@ elif menu == "Descargues":
         for d in actuales:
             pendiente = max(d["ton_total_barco"] - d["ton_descargadas"], 0)
             rata_real = d["ton_descargadas"] / d["dias_transcurridos"] if d["dias_transcurridos"] > 0 else 0
-            dias_restantes_estimados = pendiente / rata_real if rata_real > 0 else 0
+            porcentaje = d["ton_descargadas"] / d["ton_total_barco"] if d["ton_total_barco"] > 0 else 0
 
             st.info(f"""
             **{d['material']}**
             
-            Actualmente se encuentra en descargue. A la fecha se han descargado **{d['ton_descargadas']:,.0f} ton**
-            de un total de **{d['ton_total_barco']:,.0f} ton**, quedando pendientes **{pendiente:,.0f} ton**
-            por traer de puerto.
+            Avance de descargue: **{porcentaje*100:,.1f}%** del total del barco.
+            
+            Se han descargado **{d['ton_descargadas']:,.0f} ton** de **{d['ton_total_barco']:,.0f} ton**, 
+            quedando pendientes **{pendiente:,.0f} ton** por traer de puerto.
 
-            La rata real observada es de **{rata_real:,.0f} ton/día** frente a una rata pactada de
+            La rata actual es de **{rata_real:,.0f} ton/día** frente a una meta de 
             **{rata_pactada_dia:,.0f} ton/día**.
             """)
     else:
-        st.info("Actualmente no hay descargues activos de barcos.")
+        st.info("Actualmente no hay descargues activos.")
 
     st.markdown("---")
 
@@ -464,50 +472,29 @@ elif menu == "Descargues":
     st.markdown("### Recomendación operativa")
 
     if len(actuales) > 0:
-        mensajes = []
         cumple_global = True
 
         for d in actuales:
-            pendiente = max(d["ton_total_barco"] - d["ton_descargadas"], 0)
             rata_real = d["ton_descargadas"] / d["dias_transcurridos"] if d["dias_transcurridos"] > 0 else 0
 
-            if rata_real >= rata_pactada_dia:
-                mensajes.append(
-                    f"El descargue de **{d['material']}** viene cumpliendo con la rata pactada, con una rata real de **{rata_real:,.0f} ton/día**."
-                )
-            else:
+            if rata_real < rata_pactada_dia:
                 cumple_global = False
-                mensajes.append(
-                    f"El descargue de **{d['material']}** no viene cumpliendo con la rata pactada, ya que presenta una rata real de **{rata_real:,.0f} ton/día**, por debajo del objetivo de **{rata_pactada_dia:,.0f} ton/día**."
-                )
 
         if cumple_global:
             st.success("""
-            **Conclusión general:**
-            
-            La operación de descargue actual se encuentra cumpliendo con la rata pactada de descargue,
-            lo que permite proyectar atención del barco dentro del tiempo objetivo.
+            La operación de descargue presenta un desempeño adecuado, cumpliendo con la rata pactada
+            y con un avance acorde al plan de atención del barco.
             """)
         else:
             st.warning("""
-            **Conclusión general:**
-            
-            La operación de descargue actual presenta desviación frente a la rata pactada,
-            por lo que se recomienda revisar disponibilidad de equipos, continuidad operativa
-            y tiempos muertos para recuperar desempeño.
+            Se presentan desviaciones frente a la rata de descargue. Se recomienda evaluar:
+            - Disponibilidad de equipos
+            - Continuidad de operación
+            - Tiempos muertos en patio o muelle
+            - Coordinación logística puerto-planta
             """)
-
-        for msg in mensajes:
-            st.write(f"- {msg}")
-
     else:
-        st.info("""
-        **Conclusión general:**
-        
-        No se registran descargues activos en este momento. Se muestran únicamente referencias
-        de últimos descargues por material.
-        """)
-
+        st.info("Sin descargues activos actualmente.")
 # -----------------------------------
 # INVENTARIOS
 # -----------------------------------
