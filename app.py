@@ -211,21 +211,90 @@ elif menu == "Personal":
 
     st.header("Gestión de Personal")
 
+    # KPIs GENERALES
+    st.markdown("### Resumen de personal")
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.metric("Operadores en turno", "2")
+    with col2:
+        st.metric("Supervisor en turno", "1")
+    with col3:
+        st.metric("Cobertura operativa", "100%")
+    with col4:
+        st.metric("Turnos críticos", "0")
+
+    st.markdown("---")
+
+    # DISTRIBUCIÓN DEL TURNO
+    st.markdown("### Distribución del turno actual")
+
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.metric("Operadores en turno", 2)
+        st.markdown("#### 👷 Operador 1")
+        st.success("🟢 Activo")
+        st.write("**Equipo asignado:** Cargador 102")
+        st.write("**Ubicación:** Patio Norte")
+        st.write("**Turno:** Día")
+        st.write("**Observación:** Sin novedad")
 
     with col2:
-        st.metric("Supervisor en turno", 1)
+        st.markdown("#### 👷 Operador 2")
+        st.success("🟢 Activo")
+        st.write("**Equipo asignado:** Cargador 103")
+        st.write("**Ubicación:** Patio Sur")
+        st.write("**Turno:** Día")
+        st.write("**Observación:** Sin novedad")
 
     with col3:
-        st.metric("Cobertura operativa", "100%")
+        st.markdown("#### 👨‍💼 Supervisor")
+        st.success("🟢 Activo")
+        st.write("**Responsabilidad:** Supervisión general")
+        st.write("**Cobertura:** Operación MP")
+        st.write("**Turno:** Día")
+        st.write("**Observación:** Seguimiento operativo")
 
-    st.write("### Turno actual")
-    st.write("- Operador 1: Cargador 102")
-    st.write("- Operador 2: Cargador 103")
-    st.write("- Supervisor: Activo")
+    st.markdown("---")
+
+    # ESTADO OPERATIVO
+    st.markdown("### Estado de cobertura")
+
+    col4, col5 = st.columns(2)
+
+    with col4:
+        st.info("""
+        **Cobertura actual**
+        
+        La operación cuenta con la totalidad del personal requerido para atender
+        las actividades programadas del turno.
+        """)
+
+    with col5:
+        st.success("""
+        **Condición operativa**
+        
+        No se presentan vacantes, ausencias ni restricciones de personal
+        que afecten la continuidad de la operación.
+        """)
+
+    st.markdown("---")
+
+    # ALERTAS Y RECOMENDACIONES
+    st.markdown("### Recomendación operativa")
+
+    st.info("""
+    **Conclusión del estado de personal:**
+    
+    La operación mantiene una **cobertura del 100%** en el turno actual, con asignación
+    completa de operadores y supervisión activa, lo que permite sostener la atención
+    de descargues y movimiento de materias primas sin restricciones por recurso humano.
+
+    **Acciones sugeridas:**
+    - Mantener seguimiento a la asignación diaria por equipo y frente de trabajo.
+    - Verificar relevo oportuno en cambios de turno para evitar tiempos muertos.
+    - Asegurar comunicación continua entre operadores y supervisor ante cambios en la operación.
+    """)
 
 # -----------------------------------
 # DESCARGUES
