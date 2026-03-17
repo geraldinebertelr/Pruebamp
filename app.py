@@ -28,23 +28,41 @@ menu = st.sidebar.selectbox(
 # -----------------------------------
 if menu == "Inicio":
 
+    # TÍTULO
     st.title("Operación de Materias Primas")
 
-    # 🔥 IMAGEN CENTRADA (SIN ERRORES)
-    col1, col2, col3 = st.columns([1,2,1])
+    # 🔥 IMAGEN MÁS PROTAGONISTA
+    col1, col2, col3 = st.columns([1,3,1])
     with col2:
-        st.image("MPImage.png", width=750)
+        st.image("MPImage.png", width=900)
 
+    # 🔥 KPIs OPERATIVOS (LO MÁS IMPORTANTE)
+    st.markdown("### Estado actual de la operación")
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.metric("🚜 Cargadores disponibles", 2, delta="1 en mantenimiento")
+
+    with col2:
+        st.metric("👷 Operadores en turno", 5)
+
+    with col3:
+        st.metric("📦 MP programadas", 3)
+
+    with col4:
+        st.metric("🚢 Material recibido", "3,300 ton")
+
+    # CONTEXTO
     st.markdown("## Visión general")
 
     st.markdown("""
-    Este panel permite monitorear en tiempo real el estado de la operación,
-    integrando equipos, descargues, inventarios y abastecimiento.
+    Este panel permite monitorear en tiempo real el estado de la operación, integrando
+    equipos, descargues, inventarios y abastecimiento.
 
     Facilita la identificación de desviaciones, cuellos de botella y oportunidades de mejora,
     soportando la toma de decisiones operativas.
     """)
-
 # -----------------------------------
 # EQUIPOS
 # -----------------------------------
