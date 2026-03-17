@@ -51,10 +51,8 @@ if menu == "Inicio":
     st.subheader("Vista integrada de la operación")
 
     # Imagen principal
-    st.image(
-        "https://images.unsplash.com/photo-1581091012184-5c2b4e9c7b1c",
-        use_container_width=True
-    )
+    st.image("MPimage.jpeg", use_container_width=True)
+    
 
     st.markdown("<br>", unsafe_allow_html=True)
 
