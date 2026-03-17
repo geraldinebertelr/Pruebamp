@@ -12,7 +12,7 @@ def separador_titulo():
     st.markdown(
         """
         <div style="
-            width: 25%;
+            width: 50%;
             height: 4px;
             background-color: #1f77b4;
             border-radius: 10px;
@@ -355,6 +355,7 @@ elif menu == "Personal":
 elif menu == "Descargues":
 
     st.header("Descargues de Barcos")
+    separador_titulo()
 
     # -----------------------------------
     # DATOS BASE
