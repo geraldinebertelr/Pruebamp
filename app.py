@@ -50,22 +50,35 @@ if menu == "Inicio":
 
     st.subheader("Vista integrada de la operación")
 
-    # Imagen principal
-    st.image("MPimage.jpeg", use_container_width=True)
-    
+    # 🔥 BANNER CON TU IMAGEN (NO RECARGADO)
+    st.markdown("""
+    <div style="
+        background-image: url('MPimage.jpeg');
+        background-size: cover;
+        background-position: center;
+        height: 220px;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 28px;
+        font-weight: bold;
+    ">
+        Operación de Materias Primas
+    </div>
+    """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
     st.markdown("""
-    ### Operación de Materias Primas
-
     Esta aplicación integra la operación de materias primas, permitiendo visualizar
     equipos, descargues, inventarios, abastecimiento y recursos en una sola vista.
     """)
 
     st.markdown("---")
 
-    # Flujo operativo
+    # 🔁 FLUJO OPERATIVO
     st.markdown("### Flujo operativo")
 
     f1, f2, f3, f4, f5 = st.columns(5)
@@ -83,7 +96,7 @@ if menu == "Inicio":
 
     st.markdown("---")
 
-    # Acceso rápido
+    # 🚀 ACCESOS RÁPIDOS
     st.markdown("### Acceso rápido")
 
     b1, b2, b3 = st.columns(3)
@@ -155,39 +168,39 @@ elif menu == "Resumen operativo":
 # -----------------------------
 elif menu == "Equipos operativos":
     st.subheader("Equipos operativos")
-    st.info("Aquí veremos disponibilidad, horas, combustible y mantenimiento.")
+    st.info("Aquí veremos disponibilidad, horas, combustible y mantenimiento de los cargadores 102, 103 y 109.")
 
 # -----------------------------
 # GESTIÓN DE PERSONAL
 # -----------------------------
 elif menu == "Gestión de personal":
     st.subheader("Gestión de personal")
-    st.info("Aquí veremos recursos, turnos y cobertura operativa.")
+    st.info("Aquí veremos operadores, supervisores y turnos.")
 
 # -----------------------------
 # DESCARGUES
 # -----------------------------
 elif menu == "Descargues 2026":
     st.subheader("Descargues 2026")
-    st.info("Aquí veremos histórico de descargues y rendimiento.")
+    st.info("Aquí veremos tiempos de descargue, materiales y costos.")
 
 # -----------------------------
 # ORGANIZACIÓN MP
 # -----------------------------
 elif menu == "Organización de materias primas":
     st.subheader("Organización de materias primas")
-    st.info("Aquí veremos patios, ocupación y distribución.")
+    st.info("Aquí veremos ocupación de patios y distribución de materiales.")
 
 # -----------------------------
 # ABASTECIMIENTO
 # -----------------------------
 elif menu == "Abastecimiento":
     st.subheader("Abastecimiento")
-    st.info("Aquí veremos plan de arribo y almacenamiento.")
+    st.info("Aquí veremos plan de arribo y almacenamiento por MP.")
 
 # -----------------------------
 # INVENTARIOS
 # -----------------------------
 elif menu == "Inventarios y desviaciones":
     st.subheader("Inventarios y desviaciones")
-    st.info("Aquí veremos físico vs sistema y cobertura.")
+    st.info("Aquí veremos inventario físico vs sistema y desviaciones.")
