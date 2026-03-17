@@ -509,80 +509,80 @@ elif menu == "Inventarios":
         {
             "espacio": "Cubículo 1",
             "ocupacion": 82,
-            "material": "MP2 / MP4",
-            "recibiendo": "MP2",
-            "consumiendo": "MP4",
+            "material": "Caliza / Yeso",
+            "recibiendo": "Caliza",
+            "consumiendo": "Yeso",
             "tipo": "cubiculo_doble"
         },
         {
             "espacio": "Cubículo 2",
             "ocupacion": 75,
-            "material": "MP3 / MP5",
-            "recibiendo": "MP3",
-            "consumiendo": "MP5",
+            "material": "Escoria / Clinker",
+            "recibiendo": "Escoria",
+            "consumiendo": "Clinker",
             "tipo": "cubiculo_doble"
         },
         {
             "espacio": "Cubículo 3",
             "ocupacion": 68,
-            "material": "MP6 / MP2",
-            "recibiendo": "MP6",
-            "consumiendo": "MP2",
+            "material": "Caliza / Escoria",
+            "recibiendo": "No aplica",
+            "consumiendo": "Caliza",
             "tipo": "cubiculo_doble"
         },
         {
             "espacio": "Cubículo 4",
             "ocupacion": 91,
-            "material": "MP4 / MP7",
+            "material": "Yeso / Escoria",
             "recibiendo": "No aplica",
-            "consumiendo": "MP4",
+            "consumiendo": "Yeso",
             "tipo": "cubiculo_doble"
         },
         {
             "espacio": "Cubículo 5",
             "ocupacion": 63,
-            "material": "MP5 / MP6",
-            "recibiendo": "MP5",
-            "consumiendo": "MP6",
+            "material": "Clinker / Caliza",
+            "recibiendo": "No aplica",
+            "consumiendo": "Clinker",
             "tipo": "cubiculo_doble"
         },
         {
             "espacio": "Cubículo 6",
             "ocupacion": 58,
-            "material": "MP2",
+            "material": "Escoria",
             "recibiendo": "No aplica",
-            "consumiendo": "MP2",
+            "consumiendo": "Escoria",
             "tipo": "simple"
         },
         {
             "espacio": "Salón",
             "ocupacion": 87,
-            "material": "MP1",
-            "recibiendo": "MP1",
-            "consumiendo": "MP1",
-            "tipo": "mp1_exclusivo"
+            "material": "Clinker",
+            "recibiendo": "Clinker",
+            "consumiendo": "No aplica",
+            "tipo": "simple"
         },
         {
             "espacio": "Domo",
             "ocupacion": 72,
-            "material": "MP1",
-            "recibiendo": "No aplica",
-            "consumiendo": "MP1",
-            "tipo": "mp1_exclusivo"
+            "material": "Yeso",
+            "recibiendo": "Yeso",
+            "consumiendo": "No aplica",
+            "tipo": "simple"
         },
         {
             "espacio": "Patio Horno",
             "ocupacion": 79,
-            "material": "MP8",
-            "recibiendo": "MP8",
-            "consumiendo": "MP8",
+            "material": "Caliza",
+            "recibiendo": "No aplica",
+            "consumiendo": "No aplica",
             "tipo": "simple"
         },
         {
             "espacio": "Patio Abierto",
             "ocupacion": 66,
-            "material": "MP9",
-            "recibiendo": "MP9",
+            "material": "Escoria",
+            "recibiendo": "Escoria",
             "consumiendo": "No aplica",
             "tipo": "simple"
         }
@@ -591,18 +591,19 @@ elif menu == "Inventarios":
     ocupacion_promedio = sum(e["ocupacion"] for e in espacios) / len(espacios)
     espacios_criticos = sum(1 for e in espacios if e["ocupacion"] >= 85)
 
-    # Listas resumidas
+    # Máximo 5 consumos
     consumos = [
         f"{e['consumiendo']} desde {e['espacio']}"
         for e in espacios
         if e["consumiendo"] != "No aplica"
-    ]
+    ][:5]
 
+    # Máximo 3 recibos
     recibos = [
         f"{e['recibiendo']} hacia {e['espacio']}"
         for e in espacios
         if e["recibiendo"] != "No aplica"
-    ]
+    ][:3]
 
     # -----------------------------------
     # KPIs GENERALES
@@ -645,10 +646,10 @@ elif menu == "Inventarios":
     # -----------------------------------
     st.markdown("### Estado por espacio de almacenamiento")
 
-    cols = st.columns(4)
+    cols = st.columns(6)
 
     for i, e in enumerate(espacios):
-        with cols[i % 4]:
+        with cols[i % 6]:
             st.markdown(f"#### 📦 {e['espacio']}")
 
             if e["ocupacion"] >= 90:
@@ -677,9 +678,8 @@ elif menu == "Inventarios":
         st.info("""
         **Restricciones de almacenamiento**
         
-        - **Salón** y **Domo** son exclusivos para **MP1**.
-        - **Cubículo 1 al 5** permiten almacenar hasta **2 MP simultáneamente**.
-        - **Cubículo 6**, **Patio Horno** y **Patio Abierto** operan como posiciones simples.
+        - **Cubículo 1 al 5** permiten almacenar hasta **2 materiales simultáneamente**.
+        - **Cubículo 6**, **Salón**, **Domo**, **Patio Horno** y **Patio Abierto** operan como posiciones simples.
         """)
 
     with col7:
@@ -687,7 +687,7 @@ elif menu == "Inventarios":
         **Criterios de operación**
         
         - Monitorear ocupación por espacio.
-        - Validar materiales recibidos por posición.
+        - Validar qué material se recibe en cada posición.
         - Controlar desde qué espacios se alimenta la operación.
         """)
 
@@ -703,9 +703,6 @@ elif menu == "Inventarios":
     for e in espacios:
         if e["ocupacion"] >= 90:
             alertas.append(f"{e['espacio']} presenta ocupación crítica ({e['ocupacion']}%).")
-
-        if e["tipo"] == "mp1_exclusivo" and e["material"] != "MP1":
-            alertas.append(f"{e['espacio']} tiene material no permitido para su configuración.")
 
     if alertas:
         for alerta in alertas:
@@ -724,14 +721,14 @@ elif menu == "Inventarios":
     La operación de almacenamiento presenta una **ocupación promedio de {ocupacion_promedio:.1f}%**
     y **{espacios_criticos} espacios en condición crítica**.
 
-    Actualmente se observan materiales en consumo desde posiciones activas de almacenamiento y
-    movimientos de recibo hacia distintos espacios, por lo que se recomienda mantener seguimiento
-    sobre ocupación, compatibilidad de materiales y disponibilidad de posiciones.
+    En consumo actual se observan materiales alimentándose desde posiciones activas, mientras que
+    en recibo se mantienen frentes puntuales de almacenamiento. Se recomienda priorizar el control
+    de ocupación y la disponibilidad de espacios para evitar restricciones operativas.
 
     **Acciones sugeridas:**
     - Priorizar liberación de espacios con ocupación alta.
-    - Balancear el ingreso de materiales con los puntos de consumo.
-    - Verificar cumplimiento de restricciones de almacenamiento por tipo de espacio.
+    - Balancear recibos frente a consumo operativo.
+    - Mantener seguimiento diario por posición de almacenamiento.
     """)
 # ABASTECIMIENTO
 # -----------------------------------
