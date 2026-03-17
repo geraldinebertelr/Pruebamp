@@ -500,28 +500,216 @@ elif menu == "Descargues":
 # -----------------------------------
 elif menu == "Inventarios":
 
-    st.header("Inventarios")
+    st.header("Inventarios y Almacenamiento")
 
-    col1, col2, col3 = st.columns(3)
+    # -----------------------------------
+    # DATOS BASE
+    # -----------------------------------
+    espacios = [
+        {
+            "espacio": "Cubículo 1",
+            "ocupacion": 82,
+            "material": "MP2 / MP4",
+            "recibiendo": "MP2",
+            "consumiendo": "MP4",
+            "tipo": "cubiculo_doble"
+        },
+        {
+            "espacio": "Cubículo 2",
+            "ocupacion": 75,
+            "material": "MP3 / MP5",
+            "recibiendo": "MP3",
+            "consumiendo": "MP5",
+            "tipo": "cubiculo_doble"
+        },
+        {
+            "espacio": "Cubículo 3",
+            "ocupacion": 68,
+            "material": "MP6 / MP2",
+            "recibiendo": "MP6",
+            "consumiendo": "MP2",
+            "tipo": "cubiculo_doble"
+        },
+        {
+            "espacio": "Cubículo 4",
+            "ocupacion": 91,
+            "material": "MP4 / MP7",
+            "recibiendo": "No aplica",
+            "consumiendo": "MP4",
+            "tipo": "cubiculo_doble"
+        },
+        {
+            "espacio": "Cubículo 5",
+            "ocupacion": 63,
+            "material": "MP5 / MP6",
+            "recibiendo": "MP5",
+            "consumiendo": "MP6",
+            "tipo": "cubiculo_doble"
+        },
+        {
+            "espacio": "Cubículo 6",
+            "ocupacion": 58,
+            "material": "MP2",
+            "recibiendo": "No aplica",
+            "consumiendo": "MP2",
+            "tipo": "simple"
+        },
+        {
+            "espacio": "Salón",
+            "ocupacion": 87,
+            "material": "MP1",
+            "recibiendo": "MP1",
+            "consumiendo": "MP1",
+            "tipo": "mp1_exclusivo"
+        },
+        {
+            "espacio": "Domo",
+            "ocupacion": 72,
+            "material": "MP1",
+            "recibiendo": "No aplica",
+            "consumiendo": "MP1",
+            "tipo": "mp1_exclusivo"
+        },
+        {
+            "espacio": "Patio Horno",
+            "ocupacion": 79,
+            "material": "MP8",
+            "recibiendo": "MP8",
+            "consumiendo": "MP8",
+            "tipo": "simple"
+        },
+        {
+            "espacio": "Patio Abierto",
+            "ocupacion": 66,
+            "material": "MP9",
+            "recibiendo": "MP9",
+            "consumiendo": "No aplica",
+            "tipo": "simple"
+        }
+    ]
+
+    ocupacion_promedio = sum(e["ocupacion"] for e in espacios) / len(espacios)
+    espacios_criticos = sum(1 for e in espacios if e["ocupacion"] >= 85)
+    recibiendo_activos = sum(1 for e in espacios if e["recibiendo"] != "No aplica")
+    consumiendo_activos = sum(1 for e in espacios if e["consumiendo"] != "No aplica")
+
+    # -----------------------------------
+    # KPIs GENERALES
+    # -----------------------------------
+    st.markdown("### Resumen de almacenamiento")
+    col1, col2, col3, col4 = st.columns(4)
 
     with col1:
-        st.metric("Ocupación patios", "78%")
-
+        st.metric("Espacios monitoreados", f"{len(espacios)}")
     with col2:
-        st.metric("MP críticas", "2")
-
+        st.metric("Ocupación promedio", f"{ocupacion_promedio:.1f}%")
     with col3:
-        st.metric("Desviación total", "3%")
+        st.metric("Espacios críticos", espacios_criticos)
+    with col4:
+        st.metric("Frentes activos", f"{recibiendo_activos} recibo / {consumiendo_activos} consumo")
 
-    st.write("### Existencia física vs sistema")
-    st.write("- Caliza: 10,200 ton | Sistema: 10,000 ton")
-    st.write("- Yeso: 3,500 ton | Sistema: 3,600 ton")
-    st.write("- Puzolana: 2,800 ton | Sistema: 2,700 ton")
+    st.markdown("---")
 
-    st.write("### Materias primas críticas")
-    st.write("- Yeso")
-    st.write("- Puzolana")
+    # -----------------------------------
+    # ESTADO POR ESPACIO
+    # -----------------------------------
+    st.markdown("### Estado por espacio de almacenamiento")
 
+    cols = st.columns(2)
+
+    for i, e in enumerate(espacios):
+        with cols[i % 2]:
+            st.markdown(f"#### 📦 {e['espacio']}")
+
+            if e["ocupacion"] >= 90:
+                st.error(f"🔴 Ocupación alta: {e['ocupacion']}%")
+            elif e["ocupacion"] >= 75:
+                st.warning(f"🟡 Ocupación media-alta: {e['ocupacion']}%")
+            else:
+                st.success(f"🟢 Ocupación controlada: {e['ocupacion']}%")
+
+            st.progress(e["ocupacion"] / 100)
+
+            st.write(f"**Material almacenado:** {e['material']}")
+            st.write(f"**Recibiendo actualmente:** {e['recibiendo']}")
+            st.write(f"**Consumo desde este espacio:** {e['consumiendo']}")
+
+            if e["tipo"] == "cubiculo_doble":
+                st.caption("Configuración: admite hasta 2 MP simultáneamente.")
+            elif e["tipo"] == "mp1_exclusivo":
+                st.caption("Configuración: uso exclusivo para MP1.")
+            else:
+                st.caption("Configuración: almacenamiento simple.")
+
+    st.markdown("---")
+
+    # -----------------------------------
+    # REGLAS OPERATIVAS DEL ÁREA
+    # -----------------------------------
+    st.markdown("### Reglas operativas de almacenamiento")
+
+    col5, col6 = st.columns(2)
+
+    with col5:
+        st.info("""
+        **Reglas de segregación**
+        
+        - **Salón** y **Domo** son exclusivos para **MP1**.
+        - **Cubículo 1 al 5** permiten almacenar **hasta 2 MP simultáneamente**.
+        - **Cubículo 6**, **Patio Horno** y **Patio Abierto** operan como posiciones simples.
+        """)
+
+    with col6:
+        st.info("""
+        **Criterios de operación**
+        
+        - Se debe controlar ocupación por espacio.
+        - Se debe visualizar qué material está entrando a cada posición.
+        - Se debe identificar desde qué espacio se está alimentando la operación.
+        """)
+
+    st.markdown("---")
+
+    # -----------------------------------
+    # ALERTAS OPERATIVAS
+    # -----------------------------------
+    st.markdown("### Alertas de inventario")
+
+    alertas = []
+
+    for e in espacios:
+        if e["ocupacion"] >= 90:
+            alertas.append(f"{e['espacio']} presenta ocupación crítica ({e['ocupacion']}%).")
+
+        if e["tipo"] == "mp1_exclusivo" and e["material"] != "MP1":
+            alertas.append(f"{e['espacio']} tiene un material no permitido para su configuración.")
+
+    if alertas:
+        for alerta in alertas:
+            st.warning(f"⚠️ {alerta}")
+    else:
+        st.success("🟢 No se identifican alertas operativas en almacenamiento.")
+
+    st.markdown("---")
+
+    # -----------------------------------
+    # RECOMENDACIÓN OPERATIVA
+    # -----------------------------------
+    st.markdown("### Recomendación operativa")
+
+    st.info(f"""
+    La operación de almacenamiento presenta una **ocupación promedio de {ocupacion_promedio:.1f}%**,
+    con **{espacios_criticos} espacios en condición crítica**.
+
+    Actualmente se tienen **{recibiendo_activos} espacios recibiendo material** y
+    **{consumiendo_activos} espacios desde los cuales se está consumiendo inventario**.
+
+    **Acciones sugeridas:**
+    - Priorizar liberación o redistribución de espacios con ocupación alta.
+    - Verificar compatibilidad de materiales según tipo de almacenamiento.
+    - Mantener seguimiento a los frentes activos de recibo y consumo.
+    - Revisar balance entre ocupación, ingreso de material y puntos de consumo.
+    """)
 # -----------------------------------
 # ABASTECIMIENTO
 # -----------------------------------
