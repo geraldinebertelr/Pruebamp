@@ -213,7 +213,7 @@ elif menu == "Personal":
 
     # KPIs GENERALES
     st.markdown("### Resumen de personal")
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3, col4, col5 = st.columns(5)
 
     with col1:
         st.metric("Operadores en turno", "2")
@@ -222,7 +222,9 @@ elif menu == "Personal":
     with col3:
         st.metric("Cobertura operativa", "100%")
     with col4:
-        st.metric("Turnos críticos", "0")
+        st.metric("Accidentes (mes)", "1", delta="+1")
+    with col5:
+        st.metric("Días sin accidentes", "5")
 
     st.markdown("---")
 
@@ -257,12 +259,34 @@ elif menu == "Personal":
 
     st.markdown("---")
 
-    # ESTADO OPERATIVO
-    st.markdown("### Estado de cobertura")
+    # ACCIDENTALIDAD
+    st.markdown("### Seguridad y accidentalidad")
 
     col4, col5 = st.columns(2)
 
     with col4:
+        st.markdown("#### Personal propio")
+        st.success("🟢 Sin accidentes recientes")
+        st.write("**Accidentes mes:** 0")
+        st.write("**Último evento:** Sin registro")
+        st.write("**Severidad:** N/A")
+
+    with col5:
+        st.markdown("#### Personal externo")
+        st.warning("🟡 Evento registrado")
+        st.write("**Accidentes mes:** 1")
+        st.write("**Tipo:** Golpe menor en maniobra")
+        st.write("**Severidad:** Leve")
+        st.write("**Estado:** Investigado")
+
+    st.markdown("---")
+
+    # ESTADO OPERATIVO
+    st.markdown("### Estado de cobertura")
+
+    col6, col7 = st.columns(2)
+
+    with col6:
         st.info("""
         **Cobertura actual**
         
@@ -270,32 +294,44 @@ elif menu == "Personal":
         las actividades programadas del turno.
         """)
 
-    with col5:
+    with col7:
         st.success("""
         **Condición operativa**
         
-        No se presentan vacantes, ausencias ni restricciones de personal
-        que afecten la continuidad de la operación.
+        No se presentan ausencias que afecten la continuidad; sin embargo,
+        se mantiene monitoreo por condiciones de seguridad.
         """)
 
     st.markdown("---")
 
-    # ALERTAS Y RECOMENDACIONES
+    # ALERTAS AUTOMÁTICAS
+    st.markdown("### Alertas de seguridad")
+
+    accidentes_mes = 1
+
+    if accidentes_mes > 0:
+        st.warning("⚠️ Se han registrado accidentes en el periodo. Reforzar controles operativos y HSE.")
+    else:
+        st.success("🟢 Sin eventos de seguridad registrados.")
+
+    st.markdown("---")
+
+    # RECOMENDACIÓN GERENCIAL
     st.markdown("### Recomendación operativa")
 
     st.info("""
-    **Conclusión del estado de personal:**
+    **Conclusión del estado de personal y seguridad:**
     
-    La operación mantiene una **cobertura del 100%** en el turno actual, con asignación
-    completa de operadores y supervisión activa, lo que permite sostener la atención
-    de descargues y movimiento de materias primas sin restricciones por recurso humano.
+    La operación mantiene una **cobertura del 100%**, lo que garantiza continuidad operativa.
+    No obstante, se registra **1 evento de accidentalidad en personal externo**, lo que indica
+    la necesidad de reforzar controles en actividades de apoyo y contratistas.
 
     **Acciones sugeridas:**
-    - Mantener seguimiento a la asignación diaria por equipo y frente de trabajo.
-    - Verificar relevo oportuno en cambios de turno para evitar tiempos muertos.
-    - Asegurar comunicación continua entre operadores y supervisor ante cambios en la operación.
+    - Reforzar inducción de seguridad a personal externo antes de ingreso a operación.
+    - Validar cumplimiento de procedimientos en maniobras de descargue.
+    - Incrementar supervisión en frentes con participación de terceros.
+    - Realizar retroalimentación operativa posterior al evento.
     """)
-
 # -----------------------------------
 # DESCARGUES
 # -----------------------------------
