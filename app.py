@@ -34,7 +34,7 @@ if menu == "Inicio":
     # 🔥 IMAGEN MÁS PROTAGONISTA
     col1, col2, col3 = st.columns([1,3,1])
     with col2:
-        st.image("MPImage.png", width=900)
+        st.image("MPImage.png", width=750)
 
     # 🔥 KPIs OPERATIVOS (LO MÁS IMPORTANTE)
     st.markdown("### Estado actual de la operación")
