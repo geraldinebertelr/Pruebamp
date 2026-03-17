@@ -8,6 +8,21 @@ st.set_page_config(
     layout="wide"
 )
 
+def separador_titulo():
+    st.markdown(
+        """
+        <div style="
+            width: 25%;
+            height: 4px;
+            background-color: #1f77b4;
+            border-radius: 10px;
+            margin-top: -8px;
+            margin-bottom: 20px;
+        "></div>
+        """,
+        unsafe_allow_html=True
+    )
+
 # -----------------------------------
 # MENÚ LATERAL
 # -----------------------------------
@@ -91,7 +106,8 @@ if menu == "Inicio":
 elif menu == "Equipos":
 
     st.header("Equipos Operativos")
-
+    separador_titulo()
+    
     # RESUMEN GENERAL
     st.markdown("### Resumen de equipos")
     c1, c2, c3, c4 = st.columns(4)
@@ -210,6 +226,7 @@ elif menu == "Equipos":
 elif menu == "Personal":
 
     st.header("Gestión de Personal")
+    separador_titulo()
 
     # KPIs GENERALES
     st.markdown("### Resumen de personal")
@@ -501,6 +518,7 @@ elif menu == "Descargues":
 elif menu == "Inventarios":
 
     st.header("Inventarios y Almacenamiento")
+    separador_titulo()
 
     # -----------------------------------
     # DATOS BASE ESPACIOS
@@ -666,6 +684,7 @@ elif menu == "Inventarios":
 elif menu == "Abastecimiento":
 
     st.header("Plan de Abastecimiento")
+    separador_titulo()
 
     col1, col2 = st.columns(2)
 
