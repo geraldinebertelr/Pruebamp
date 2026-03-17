@@ -503,79 +503,19 @@ elif menu == "Inventarios":
     st.header("Inventarios y Almacenamiento")
 
     # -----------------------------------
-    # DATOS BASE DE ESPACIOS
+    # DATOS BASE ESPACIOS
     # -----------------------------------
     espacios = [
-        {
-            "espacio": "Cubículo 1",
-            "ocupacion": 82,
-            "materiales": {"Caliza": 4200, "Yeso": 1800},
-            "recibiendo": "Caliza",
-            "consumiendo": "Yeso"
-        },
-        {
-            "espacio": "Cubículo 2",
-            "ocupacion": 75,
-            "materiales": {"Escoria": 3500, "Clinker": 2200},
-            "recibiendo": "Escoria",
-            "consumiendo": "Clinker"
-        },
-        {
-            "espacio": "Cubículo 3",
-            "ocupacion": 68,
-            "materiales": {"Caliza": 3000, "Escoria": 1500},
-            "recibiendo": "No aplica",
-            "consumiendo": "Caliza"
-        },
-        {
-            "espacio": "Cubículo 4",
-            "ocupacion": 91,
-            "materiales": {"Yeso": 2800, "Escoria": 2100},
-            "recibiendo": "No aplica",
-            "consumiendo": "Yeso"
-        },
-        {
-            "espacio": "Cubículo 5",
-            "ocupacion": 63,
-            "materiales": {"Clinker": 2600, "Caliza": 1900},
-            "recibiendo": "No aplica",
-            "consumiendo": "Clinker"
-        },
-        {
-            "espacio": "Cubículo 6",
-            "ocupacion": 58,
-            "materiales": {"Escoria": 3100},
-            "recibiendo": "No aplica",
-            "consumiendo": "Escoria"
-        },
-        {
-            "espacio": "Salón",
-            "ocupacion": 87,
-            "materiales": {"Clinker": 6000},
-            "recibiendo": "Clinker",
-            "consumiendo": "No aplica"
-        },
-        {
-            "espacio": "Domo",
-            "ocupacion": 72,
-            "materiales": {"Yeso": 5200},
-            "recibiendo": "Yeso",
-            "consumiendo": "No aplica"
-        },
-        {
-            "espacio": "Patio Horno",
-            "ocupacion": 79,
-            "materiales": {"Caliza": 4800},
-            "recibiendo": "No aplica",
-            "consumiendo": "No aplica"
-        },
-        {
-            "espacio": "Patio Abierto",
-            "ocupacion": 66,
-            "materiales": {"Escoria": 4300},
-            "recibiendo": "Escoria",
-            "consumiendo": "No aplica"
-        }
+        {"espacio": "Cubículo 1", "ocupacion": 82, "materiales": {"Caliza": 4200, "Yeso": 1800}, "recibiendo": "Caliza", "consumiendo": "Yeso"},
+        {"espacio": "Cubículo 2", "ocupacion": 75, "materiales": {"Escoria": 3500, "Clinker": 2200}, "recibiendo": "Escoria", "consumiendo": "Clinker"},
+        {"espacio": "Cubículo 3", "ocupacion": 68, "materiales": {"Caliza": 3000, "Escoria": 1500}, "recibiendo": "No aplica", "consumiendo": "Caliza"},
+        {"espacio": "Cubículo 4", "ocupacion": 91, "materiales": {"Yeso": 2800, "Escoria": 2100}, "recibiendo": "No aplica", "consumiendo": "Yeso"},
+        {"espacio": "Cubículo 5", "ocupacion": 63, "materiales": {"Clinker": 2600, "Caliza": 1900}, "recibiendo": "No aplica", "consumiendo": "Clinker"},
+        {"espacio": "Cubículo 6", "ocupacion": 58, "materiales": {"Escoria": 3100}, "recibiendo": "No aplica", "consumiendo": "Escoria"},
+        {"espacio": "Salón", "ocupacion": 87, "materiales": {"Clinker": 6000}, "recibiendo": "Clinker", "consumiendo": "No aplica"},
+        {"espacio": "Domo", "ocupacion": 72, "materiales": {"Yeso": 5200}, "recibiendo": "Yeso", "consumiendo": "No aplica"},
+        {"espacio": "Patio Horno", "ocupacion": 79, "materiales": {"Caliza": 4800}, "recibiendo": "No aplica", "consumiendo": "No aplica"},
+        {"espacio": "Patio Abierto", "ocupacion": 66, "materiales": {"Escoria": 4300}, "recibiendo": "Escoria", "consumiendo": "No aplica"}
     ]
 
     # -----------------------------------
@@ -586,174 +526,107 @@ elif menu == "Inventarios":
             "inventario_actual": 10800,
             "minimo": 8000,
             "maximo": 15000,
-            "cobertura_dias": 4.5,
-            "consumo_semana": [2200, 2100, 2400, 2300, 2250, 2100, 2050],
-            "recibo_semana":  [0, 0, 1800, 0, 2200, 0, 0]
+            "consumo": [2200, 2100, 2400, 2300, 2250, 2100, 2050],
+            "recibo":  [0, 0, 1800, 0, 2200, 0, 0]
         },
         "Yeso": {
             "inventario_actual": 9800,
             "minimo": 5000,
             "maximo": 12000,
-            "cobertura_dias": 6.2,
-            "consumo_semana": [900, 850, 920, 880, 910, 870, 860],
-            "recibo_semana":  [0, 1500, 0, 0, 0, 1200, 0]
+            "consumo": [900, 850, 920, 880, 910, 870, 860],
+            "recibo":  [0, 1500, 0, 0, 0, 1200, 0]
         },
         "Caliza": {
             "inventario_actual": 13900,
             "minimo": 10000,
             "maximo": 18000,
-            "cobertura_dias": 5.1,
-            "consumo_semana": [2600, 2550, 2700, 2500, 2620, 2580, 2490],
-            "recibo_semana":  [3000, 0, 0, 2800, 0, 0, 0]
+            "consumo": [2600, 2550, 2700, 2500, 2620, 2580, 2490],
+            "recibo":  [3000, 0, 0, 2800, 0, 0, 0]
         },
         "Escoria": {
             "inventario_actual": 14200,
             "minimo": 7000,
             "maximo": 16000,
-            "cobertura_dias": 7.0,
-            "consumo_semana": [1500, 1480, 1520, 1490, 1510, 1470, 1450],
-            "recibo_semana":  [0, 2000, 0, 0, 1800, 0, 2200]
+            "consumo": [1500, 1480, 1520, 1490, 1510, 1470, 1450],
+            "recibo":  [0, 2000, 0, 0, 1800, 0, 2200]
         }
     }
 
     # -----------------------------------
-    # KPIs GENERALES ESPACIOS
+    # KPIs GENERALES
     # -----------------------------------
     ocupacion_promedio = sum(e["ocupacion"] for e in espacios) / len(espacios)
     espacios_criticos = sum(1 for e in espacios if e["ocupacion"] >= 85)
 
-    consumos = [
-        f"{e['consumiendo']} desde {e['espacio']}"
-        for e in espacios if e["consumiendo"] != "No aplica"
-    ][:5]
-
-    recibos = [
-        f"{e['recibiendo']} hacia {e['espacio']}"
-        for e in espacios if e["recibiendo"] != "No aplica"
-    ][:3]
-
-    # -----------------------------------
-    # RESUMEN DE ALMACENAMIENTO
-    # -----------------------------------
     st.markdown("### Resumen de almacenamiento")
 
     c1, c2, c3 = st.columns(3)
-    with c1:
-        st.metric("Espacios", len(espacios))
-    with c2:
-        st.metric("Ocupación promedio", f"{ocupacion_promedio:.1f}%")
-    with c3:
-        st.metric("Espacios críticos", espacios_criticos)
+    c1.metric("Espacios", len(espacios))
+    c2.metric("Ocupación promedio", f"{ocupacion_promedio:.1f}%")
+    c3.metric("Espacios críticos", espacios_criticos)
 
     st.markdown("---")
 
     # -----------------------------------
-    # FLUJO OPERATIVO GENERAL
+    # SELECCIÓN MATERIAL
     # -----------------------------------
-    st.markdown("### Flujo operativo")
+    st.markdown("### Estado global por material")
 
-    c4, c5 = st.columns(2)
+    material_sel = st.selectbox("Selecciona material", list(materiales_data.keys()))
+    data = materiales_data[material_sel]
 
-    with c4:
-        st.info("**Consumo actual**\n\n" + "\n".join([f"- {c}" for c in consumos]))
-
-    with c5:
-        st.info("**Recepción actual**\n\n" + "\n".join([f"- {r}" for r in recibos]))
-
-    st.markdown("---")
-
-    # -----------------------------------
-    # ESTADO GLOBAL POR MATERIAL
-    # -----------------------------------
-    st.markdown("### Estado global por materia prima")
-
-    material_sel = st.selectbox(
-        "Selecciona un material",
-        list(materiales_data.keys())
-    )
-
-    data_sel = materiales_data[material_sel]
-
-    g1, g2, g3, g4 = st.columns(4)
-    with g1:
-        st.metric("Inventario actual", f"{data_sel['inventario_actual']:,.0f} ton")
-    with g2:
-        st.metric("Mínimo", f"{data_sel['minimo']:,.0f} ton")
-    with g3:
-        st.metric("Máximo", f"{data_sel['maximo']:,.0f} ton")
-    with g4:
-        st.metric("Cobertura", f"{data_sel['cobertura_dias']:.1f} días")
-
-    # Semáforo simple
-    inventario_actual = data_sel["inventario_actual"]
-    minimo = data_sel["minimo"]
-    maximo = data_sel["maximo"]
-
-    if inventario_actual < minimo:
-        st.error(f"🔴 {material_sel} por debajo del mínimo.")
-    elif inventario_actual > maximo:
-        st.warning(f"🟡 {material_sel} por encima del máximo.")
-    else:
-        st.success(f"🟢 {material_sel} dentro del rango esperado.")
+    # KPI MATERIAL
+    g1, g2, g3 = st.columns(3)
+    g1.metric("Inventario actual", f"{data['inventario_actual']:,.0f} ton")
+    g2.metric("Mínimo", f"{data['minimo']:,.0f} ton")
+    g3.metric("Máximo", f"{data['maximo']:,.0f} ton")
 
     # -----------------------------------
-    # GRÁFICA SEMANAL DEL MATERIAL SELECCIONADO
+    # INVENTARIO HISTÓRICO (CLAVE 🔥)
     # -----------------------------------
-    st.markdown(f"### Consumo y recibo semanal - {material_sel}")
+    st.markdown("### Inventario semanal")
 
     dias = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"]
 
+    inventario = []
+    stock = data["inventario_actual"]
+
+    # reconstrucción hacia atrás
+    for i in reversed(range(7)):
+        stock = stock - data["recibo"][i] + data["consumo"][i]
+        inventario.insert(0, stock)
+
+    # agregar último día real
+    inventario[-1] = data["inventario_actual"]
+
     chart_data = {
         "Día": dias,
-        "Consumo": data_sel["consumo_semana"],
-        "Recibo": data_sel["recibo_semana"]
+        "Inventario": inventario
     }
 
     st.line_chart(chart_data, x="Día")
 
     # -----------------------------------
-    # RESUMEN SEMANAL DEL MATERIAL
+    # ALERTA MATERIAL
     # -----------------------------------
-    total_consumo = sum(data_sel["consumo_semana"])
-    total_recibo = sum(data_sel["recibo_semana"])
-    promedio_consumo = total_consumo / 7
-    promedio_recibo = total_recibo / 7
-
-    r1, r2 = st.columns(2)
-
-    with r1:
-        st.info(f"""
-**Resumen de consumo - última semana**
-
-- Material: {material_sel}
-- Consumo total: {total_consumo:,.0f} ton
-- Consumo promedio diario: {promedio_consumo:,.0f} ton/día
-- Día de mayor consumo: {dias[data_sel['consumo_semana'].index(max(data_sel['consumo_semana']))]}
-- Pico de consumo: {max(data_sel['consumo_semana']):,.0f} ton
-""")
-
-    with r2:
-        st.info(f"""
-**Resumen de recibo - última semana**
-
-- Material: {material_sel}
-- Recibo total: {total_recibo:,.0f} ton
-- Recibo promedio diario: {promedio_recibo:,.0f} ton/día
-- Día de mayor recibo: {dias[data_sel['recibo_semana'].index(max(data_sel['recibo_semana']))]}
-- Pico de recibo: {max(data_sel['recibo_semana']):,.0f} ton
-""")
+    if data["inventario_actual"] < data["minimo"]:
+        st.error(f"🔴 {material_sel} por debajo del mínimo")
+    elif data["inventario_actual"] > data["maximo"]:
+        st.warning(f"🟡 {material_sel} por encima del máximo")
+    else:
+        st.success(f"🟢 {material_sel} en rango operativo")
 
     st.markdown("---")
 
     # -----------------------------------
-    # ESTADO POR ESPACIO
+    # ESPACIOS (5 POR FILA)
     # -----------------------------------
     st.markdown("### Estado por espacio")
 
-    cols = st.columns(6)
+    cols = st.columns(5)
 
     for i, e in enumerate(espacios):
-        with cols[i % 6]:
+        with cols[i % 5]:
 
             st.markdown(f"#### 📦 {e['espacio']}")
 
@@ -773,50 +646,21 @@ elif menu == "Inventarios":
     st.markdown("---")
 
     # -----------------------------------
-    # ALERTAS
-    # -----------------------------------
-    st.markdown("### Alertas")
-
-    alertas = []
-
-    for e in espacios:
-        if e["ocupacion"] >= 90:
-            alertas.append(f"{e['espacio']} en ocupación crítica ({e['ocupacion']}%).")
-
-    if inventario_actual < minimo:
-        alertas.append(f"{material_sel} se encuentra por debajo del inventario mínimo.")
-    elif inventario_actual > maximo:
-        alertas.append(f"{material_sel} se encuentra por encima del inventario máximo.")
-
-    if alertas:
-        for a in alertas:
-            st.warning(f"⚠️ {a}")
-    else:
-        st.success("🟢 Operación sin alertas críticas.")
-
-    st.markdown("---")
-
-    # -----------------------------------
     # RECOMENDACIÓN
     # -----------------------------------
     st.markdown("### Recomendación operativa")
 
     st.info(f"""
-La operación presenta una ocupación promedio de **{ocupacion_promedio:.1f}%**
-con **{espacios_criticos} espacios en condición crítica**.
+    El material **{material_sel}** presenta un inventario actual de **{data['inventario_actual']:,.0f} ton**.
 
-Para **{material_sel}**, el inventario actual es de **{inventario_actual:,.0f} ton**,
-con una cobertura estimada de **{data_sel['cobertura_dias']:.1f} días**.
+    Se observa la tendencia semanal del inventario, lo que permite anticipar riesgos de desabastecimiento
+    o sobrestock.
 
-En la última semana se registró un consumo total de **{total_consumo:,.0f} ton**
-y un recibo total de **{total_recibo:,.0f} ton**.
-
-**Acciones sugeridas:**
-- Mantener seguimiento diario del material seleccionado.
-- Validar balance entre consumo, recibo y cobertura.
-- Priorizar decisiones sobre materiales cercanos al mínimo.
-- Liberar espacios con alta ocupación para sostener flexibilidad operativa.
-""")
+    **Acciones sugeridas:**
+    - Ajustar ritmo de recibos vs consumo
+    - Priorizar materiales cercanos al mínimo
+    - Optimizar uso de espacios disponibles
+    """)
 # ABASTECIMIENTO
 # -----------------------------------
 elif menu == "Abastecimiento":
