@@ -590,14 +590,25 @@ elif menu == "Inventarios":
 
     ocupacion_promedio = sum(e["ocupacion"] for e in espacios) / len(espacios)
     espacios_criticos = sum(1 for e in espacios if e["ocupacion"] >= 85)
-    recibiendo_activos = sum(1 for e in espacios if e["recibiendo"] != "No aplica")
-    consumiendo_activos = sum(1 for e in espacios if e["consumiendo"] != "No aplica")
+
+    # Listas resumidas
+    consumos = [
+        f"{e['consumiendo']} desde {e['espacio']}"
+        for e in espacios
+        if e["consumiendo"] != "No aplica"
+    ]
+
+    recibos = [
+        f"{e['recibiendo']} hacia {e['espacio']}"
+        for e in espacios
+        if e["recibiendo"] != "No aplica"
+    ]
 
     # -----------------------------------
     # KPIs GENERALES
     # -----------------------------------
     st.markdown("### Resumen de almacenamiento")
-    col1, col2, col3, col4 = st.columns(4)
+    col1, col2, col3 = st.columns(3)
 
     with col1:
         st.metric("Espacios monitoreados", f"{len(espacios)}")
@@ -605,8 +616,27 @@ elif menu == "Inventarios":
         st.metric("Ocupación promedio", f"{ocupacion_promedio:.1f}%")
     with col3:
         st.metric("Espacios críticos", espacios_criticos)
+
+    st.markdown("---")
+
+    # -----------------------------------
+    # RESUMEN OPERATIVO
+    # -----------------------------------
+    st.markdown("### Resumen operativo")
+
+    col4, col5 = st.columns(2)
+
     with col4:
-        st.metric("Frentes activos", f"{recibiendo_activos} recibo / {consumiendo_activos} consumo")
+        st.info(
+            "**Consumo actual**\n\n" +
+            "\n".join([f"- {c}" for c in consumos])
+        )
+
+    with col5:
+        st.info(
+            "**Recepción / almacenamiento actual**\n\n" +
+            "\n".join([f"- {r}" for r in recibos])
+        )
 
     st.markdown("---")
 
@@ -615,63 +645,56 @@ elif menu == "Inventarios":
     # -----------------------------------
     st.markdown("### Estado por espacio de almacenamiento")
 
-    cols = st.columns(2)
+    cols = st.columns(4)
 
     for i, e in enumerate(espacios):
-        with cols[i % 2]:
+        with cols[i % 4]:
             st.markdown(f"#### 📦 {e['espacio']}")
 
             if e["ocupacion"] >= 90:
-                st.error(f"🔴 Ocupación alta: {e['ocupacion']}%")
+                st.error(f"🔴 {e['ocupacion']}%")
             elif e["ocupacion"] >= 75:
-                st.warning(f"🟡 Ocupación media-alta: {e['ocupacion']}%")
+                st.warning(f"🟡 {e['ocupacion']}%")
             else:
-                st.success(f"🟢 Ocupación controlada: {e['ocupacion']}%")
+                st.success(f"🟢 {e['ocupacion']}%")
 
             st.progress(e["ocupacion"] / 100)
 
-            st.write(f"**Material almacenado:** {e['material']}")
-            st.write(f"**Recibiendo actualmente:** {e['recibiendo']}")
-            st.write(f"**Consumo desde este espacio:** {e['consumiendo']}")
-
-            if e["tipo"] == "cubiculo_doble":
-                st.caption("Configuración: admite hasta 2 MP simultáneamente.")
-            elif e["tipo"] == "mp1_exclusivo":
-                st.caption("Configuración: uso exclusivo para MP1.")
-            else:
-                st.caption("Configuración: almacenamiento simple.")
+            st.write(f"**Material:** {e['material']}")
+            st.write(f"**Recibe:** {e['recibiendo']}")
+            st.write(f"**Consume:** {e['consumiendo']}")
 
     st.markdown("---")
 
     # -----------------------------------
-    # REGLAS OPERATIVAS DEL ÁREA
+    # REGLAS OPERATIVAS
     # -----------------------------------
     st.markdown("### Reglas operativas de almacenamiento")
 
-    col5, col6 = st.columns(2)
-
-    with col5:
-        st.info("""
-        **Reglas de segregación**
-        
-        - **Salón** y **Domo** son exclusivos para **MP1**.
-        - **Cubículo 1 al 5** permiten almacenar **hasta 2 MP simultáneamente**.
-        - **Cubículo 6**, **Patio Horno** y **Patio Abierto** operan como posiciones simples.
-        """)
+    col6, col7 = st.columns(2)
 
     with col6:
         st.info("""
+        **Restricciones de almacenamiento**
+        
+        - **Salón** y **Domo** son exclusivos para **MP1**.
+        - **Cubículo 1 al 5** permiten almacenar hasta **2 MP simultáneamente**.
+        - **Cubículo 6**, **Patio Horno** y **Patio Abierto** operan como posiciones simples.
+        """)
+
+    with col7:
+        st.info("""
         **Criterios de operación**
         
-        - Se debe controlar ocupación por espacio.
-        - Se debe visualizar qué material está entrando a cada posición.
-        - Se debe identificar desde qué espacio se está alimentando la operación.
+        - Monitorear ocupación por espacio.
+        - Validar materiales recibidos por posición.
+        - Controlar desde qué espacios se alimenta la operación.
         """)
 
     st.markdown("---")
 
     # -----------------------------------
-    # ALERTAS OPERATIVAS
+    # ALERTAS
     # -----------------------------------
     st.markdown("### Alertas de inventario")
 
@@ -682,7 +705,7 @@ elif menu == "Inventarios":
             alertas.append(f"{e['espacio']} presenta ocupación crítica ({e['ocupacion']}%).")
 
         if e["tipo"] == "mp1_exclusivo" and e["material"] != "MP1":
-            alertas.append(f"{e['espacio']} tiene un material no permitido para su configuración.")
+            alertas.append(f"{e['espacio']} tiene material no permitido para su configuración.")
 
     if alertas:
         for alerta in alertas:
@@ -698,19 +721,18 @@ elif menu == "Inventarios":
     st.markdown("### Recomendación operativa")
 
     st.info(f"""
-    La operación de almacenamiento presenta una **ocupación promedio de {ocupacion_promedio:.1f}%**,
-    con **{espacios_criticos} espacios en condición crítica**.
+    La operación de almacenamiento presenta una **ocupación promedio de {ocupacion_promedio:.1f}%**
+    y **{espacios_criticos} espacios en condición crítica**.
 
-    Actualmente se tienen **{recibiendo_activos} espacios recibiendo material** y
-    **{consumiendo_activos} espacios desde los cuales se está consumiendo inventario**.
+    Actualmente se observan materiales en consumo desde posiciones activas de almacenamiento y
+    movimientos de recibo hacia distintos espacios, por lo que se recomienda mantener seguimiento
+    sobre ocupación, compatibilidad de materiales y disponibilidad de posiciones.
 
     **Acciones sugeridas:**
-    - Priorizar liberación o redistribución de espacios con ocupación alta.
-    - Verificar compatibilidad de materiales según tipo de almacenamiento.
-    - Mantener seguimiento a los frentes activos de recibo y consumo.
-    - Revisar balance entre ocupación, ingreso de material y puntos de consumo.
+    - Priorizar liberación de espacios con ocupación alta.
+    - Balancear el ingreso de materiales con los puntos de consumo.
+    - Verificar cumplimiento de restricciones de almacenamiento por tipo de espacio.
     """)
-# -----------------------------------
 # ABASTECIMIENTO
 # -----------------------------------
 elif menu == "Abastecimiento":
