@@ -631,10 +631,10 @@ elif menu == "Inventarios":
     # -----------------------------------
     st.markdown("### Estado por espacio")
 
-    cols = st.columns(6)
+    cols = st.columns(5)
 
     for i, e in enumerate(espacios):
-        with cols[i % 6]:
+        with cols[i % 5]:
 
             st.markdown(f"#### 📦 {e['espacio']}")
 
