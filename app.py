@@ -509,113 +509,104 @@ elif menu == "Inventarios":
         {
             "espacio": "Cubículo 1",
             "ocupacion": 82,
-            "material": "Caliza / Yeso",
+            "materiales": {"Caliza": 4200, "Yeso": 1800},
             "recibiendo": "Caliza",
-            "consumiendo": "Yeso",
-            "tipo": "cubiculo_doble"
+            "consumiendo": "Yeso"
         },
         {
             "espacio": "Cubículo 2",
             "ocupacion": 75,
-            "material": "Escoria / Clinker",
+            "materiales": {"Escoria": 3500, "Clinker": 2200},
             "recibiendo": "Escoria",
-            "consumiendo": "Clinker",
-            "tipo": "cubiculo_doble"
+            "consumiendo": "Clinker"
         },
         {
             "espacio": "Cubículo 3",
             "ocupacion": 68,
-            "material": "Caliza / Escoria",
+            "materiales": {"Caliza": 3000, "Escoria": 1500},
             "recibiendo": "No aplica",
-            "consumiendo": "Caliza",
-            "tipo": "cubiculo_doble"
+            "consumiendo": "Caliza"
         },
         {
             "espacio": "Cubículo 4",
             "ocupacion": 91,
-            "material": "Yeso / Escoria",
+            "materiales": {"Yeso": 2800, "Escoria": 2100},
             "recibiendo": "No aplica",
-            "consumiendo": "Yeso",
-            "tipo": "cubiculo_doble"
+            "consumiendo": "Yeso"
         },
         {
             "espacio": "Cubículo 5",
             "ocupacion": 63,
-            "material": "Clinker / Caliza",
+            "materiales": {"Clinker": 2600, "Caliza": 1900},
             "recibiendo": "No aplica",
-            "consumiendo": "Clinker",
-            "tipo": "cubiculo_doble"
+            "consumiendo": "Clinker"
         },
         {
             "espacio": "Cubículo 6",
             "ocupacion": 58,
-            "material": "Escoria",
+            "materiales": {"Escoria": 3100},
             "recibiendo": "No aplica",
-            "consumiendo": "Escoria",
-            "tipo": "simple"
+            "consumiendo": "Escoria"
         },
         {
             "espacio": "Salón",
             "ocupacion": 87,
-            "material": "Clinker",
+            "materiales": {"Clinker": 6000},
             "recibiendo": "Clinker",
-            "consumiendo": "No aplica",
-            "tipo": "simple"
+            "consumiendo": "No aplica"
         },
         {
             "espacio": "Domo",
             "ocupacion": 72,
-            "material": "Yeso",
+            "materiales": {"Yeso": 5200},
             "recibiendo": "Yeso",
-            "consumiendo": "No aplica",
-            "tipo": "simple"
+            "consumiendo": "No aplica"
         },
         {
             "espacio": "Patio Horno",
             "ocupacion": 79,
-            "material": "Caliza",
+            "materiales": {"Caliza": 4800},
             "recibiendo": "No aplica",
-            "consumiendo": "No aplica",
-            "tipo": "simple"
+            "consumiendo": "No aplica"
         },
         {
             "espacio": "Patio Abierto",
             "ocupacion": 66,
-            "material": "Escoria",
+            "materiales": {"Escoria": 4300},
             "recibiendo": "Escoria",
-            "consumiendo": "No aplica",
-            "tipo": "simple"
+            "consumiendo": "No aplica"
         }
     ]
 
+    # -----------------------------------
+    # KPIs
+    # -----------------------------------
     ocupacion_promedio = sum(e["ocupacion"] for e in espacios) / len(espacios)
     espacios_criticos = sum(1 for e in espacios if e["ocupacion"] >= 85)
 
-    # Máximo 5 consumos
+    # Máx 5 consumos
     consumos = [
         f"{e['consumiendo']} desde {e['espacio']}"
-        for e in espacios
-        if e["consumiendo"] != "No aplica"
+        for e in espacios if e["consumiendo"] != "No aplica"
     ][:5]
 
-    # Máximo 3 recibos
+    # Máx 3 recibos
     recibos = [
         f"{e['recibiendo']} hacia {e['espacio']}"
-        for e in espacios
-        if e["recibiendo"] != "No aplica"
+        for e in espacios if e["recibiendo"] != "No aplica"
     ][:3]
 
     # -----------------------------------
-    # KPIs GENERALES
+    # RESUMEN
     # -----------------------------------
     st.markdown("### Resumen de almacenamiento")
-    col1, col2, col3 = st.columns(3)
 
-    with col1:
-        st.metric("Espacios monitoreados", f"{len(espacios)}")
-    with col2:
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.metric("Espacios", len(espacios))
+    with c2:
         st.metric("Ocupación promedio", f"{ocupacion_promedio:.1f}%")
-    with col3:
+    with c3:
         st.metric("Espacios críticos", espacios_criticos)
 
     st.markdown("---")
@@ -623,35 +614,31 @@ elif menu == "Inventarios":
     # -----------------------------------
     # RESUMEN OPERATIVO
     # -----------------------------------
-    st.markdown("### Resumen operativo")
+    st.markdown("### Flujo operativo")
 
-    col4, col5 = st.columns(2)
+    c4, c5 = st.columns(2)
 
-    with col4:
-        st.info(
-            "**Consumo actual**\n\n" +
-            "\n".join([f"- {c}" for c in consumos])
-        )
+    with c4:
+        st.info("**Consumo actual**\n\n" + "\n".join([f"- {c}" for c in consumos]))
 
-    with col5:
-        st.info(
-            "**Recepción / almacenamiento actual**\n\n" +
-            "\n".join([f"- {r}" for r in recibos])
-        )
+    with c5:
+        st.info("**Recepción actual**\n\n" + "\n".join([f"- {r}" for r in recibos]))
 
     st.markdown("---")
 
     # -----------------------------------
-    # ESTADO POR ESPACIO
+    # ESPACIOS (6 POR FILA)
     # -----------------------------------
-    st.markdown("### Estado por espacio de almacenamiento")
+    st.markdown("### Estado por espacio")
 
-    cols = st.columns(5)
+    cols = st.columns(6)
 
     for i, e in enumerate(espacios):
-        with cols[i % 5]:
+        with cols[i % 6]:
+
             st.markdown(f"#### 📦 {e['espacio']}")
 
+            # Estado ocupación
             if e["ocupacion"] >= 90:
                 st.error(f"🔴 {e['ocupacion']}%")
             elif e["ocupacion"] >= 75:
@@ -661,74 +648,48 @@ elif menu == "Inventarios":
 
             st.progress(e["ocupacion"] / 100)
 
-            st.write(f"**Material:** {e['material']}")
-            st.write(f"**Recibe:** {e['recibiendo']}")
-            st.write(f"**Consume:** {e['consumiendo']}")
-
-    st.markdown("---")
-
-    # -----------------------------------
-    # REGLAS OPERATIVAS
-    # -----------------------------------
-    st.markdown("### Reglas operativas de almacenamiento")
-
-    col6, col7 = st.columns(2)
-
-    with col6:
-        st.info("""
-        **Restricciones de almacenamiento**
-        
-        - **Cubículo 1 al 5** permiten almacenar hasta **2 materiales simultáneamente**.
-        - **Cubículo 6**, **Salón**, **Domo**, **Patio Horno** y **Patio Abierto** operan como posiciones simples.
-        """)
-
-    with col7:
-        st.info("""
-        **Criterios de operación**
-        
-        - Monitorear ocupación por espacio.
-        - Validar qué material se recibe en cada posición.
-        - Controlar desde qué espacios se alimenta la operación.
-        """)
+            # Inventario por material
+            st.write("**Inventario:**")
+            for mp, ton in e["materiales"].items():
+                st.write(f"- {mp}: {ton:,.0f} ton")
 
     st.markdown("---")
 
     # -----------------------------------
     # ALERTAS
     # -----------------------------------
-    st.markdown("### Alertas de inventario")
+    st.markdown("### Alertas")
 
     alertas = []
 
     for e in espacios:
         if e["ocupacion"] >= 90:
-            alertas.append(f"{e['espacio']} presenta ocupación crítica ({e['ocupacion']}%).")
+            alertas.append(f"{e['espacio']} en ocupación crítica ({e['ocupacion']}%).")
 
     if alertas:
-        for alerta in alertas:
-            st.warning(f"⚠️ {alerta}")
+        for a in alertas:
+            st.warning(f"⚠️ {a}")
     else:
-        st.success("🟢 No se identifican alertas operativas en almacenamiento.")
+        st.success("🟢 Operación sin alertas críticas.")
 
     st.markdown("---")
 
     # -----------------------------------
-    # RECOMENDACIÓN OPERATIVA
+    # RECOMENDACIÓN
     # -----------------------------------
     st.markdown("### Recomendación operativa")
 
     st.info(f"""
-    La operación de almacenamiento presenta una **ocupación promedio de {ocupacion_promedio:.1f}%**
-    y **{espacios_criticos} espacios en condición crítica**.
+    La operación presenta una ocupación promedio de **{ocupacion_promedio:.1f}%**
+    con **{espacios_criticos} espacios en condición crítica**.
 
-    En consumo actual se observan materiales alimentándose desde posiciones activas, mientras que
-    en recibo se mantienen frentes puntuales de almacenamiento. Se recomienda priorizar el control
-    de ocupación y la disponibilidad de espacios para evitar restricciones operativas.
+    Se identifican flujos activos de consumo y recepción, por lo que es clave
+    mantener el balance entre ingreso de material y disponibilidad de almacenamiento.
 
     **Acciones sugeridas:**
-    - Priorizar liberación de espacios con ocupación alta.
-    - Balancear recibos frente a consumo operativo.
-    - Mantener seguimiento diario por posición de almacenamiento.
+    - Liberar espacios con alta ocupación.
+    - Priorizar consumo desde posiciones críticas.
+    - Controlar el ingreso de material hacia espacios disponibles.
     """)
 # ABASTECIMIENTO
 # -----------------------------------
